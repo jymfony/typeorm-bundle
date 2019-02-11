@@ -1,6 +1,7 @@
 const LoggerAwareInterface = Jymfony.Component.Logger.LoggerAwareInterface;
 const LoggerAwareTrait = Jymfony.Component.Logger.LoggerAwareTrait;
 
+const url = require('url');
 const typeorm = require('typeorm');
 const Base = typeorm.ConnectionManager;
 const EntitySchema = typeorm.EntitySchema;
@@ -45,11 +46,26 @@ class ConnectionManager extends mix(Base, LoggerAwareInterface, LoggerAwareTrait
     get(name) {
         if (! super.has(name) && undefined !== this._connections[name]) {
             const connection = this._connections[name];
-            const schemas = Array.from(this._getEntitySchemas(name));
+            if (connection.url) {
+                const parsed = url.parse(connection.url);
+                connection.driver = __jymfony.rtrim(String(parsed.protocol), ':');
 
+                const auth = parsed.auth.match(/^([^:]+):((?:\\@|[^@])+)$/);
+                if (null !== auth) {
+                    [ , connection.user, connection.password ] = auth;
+                }
+
+                connection.database = __jymfony.ltrim(parsed.pathname, '/');
+                connection.host = parsed.hostname;
+                connection.port = parsed.port;
+            }
+
+            const schemas = Array.from(this._getEntitySchemas(name));
             const con = this.create({
                 name,
                 type: connection.driver,
+                host: connection.host,
+                port: connection.port,
                 username: connection.user,
                 password: connection.password,
                 database: connection.database,

@@ -4,7 +4,7 @@ const TreeBuilder = Jymfony.Component.Config.Definition.Builder.TreeBuilder;
 const ConfigurationInterface = Jymfony.Component.Config.Definition.ConfigurationInterface;
 
 /**
- * @memberOf Jymfony.Bundle.FrameworkBundle.DependencyInjection
+ * @memberOf Jymfony.Bundle.TypeORMBundle.DependencyInjection
  */
 class Configuration extends implementationOf(ConfigurationInterface) {
     /**

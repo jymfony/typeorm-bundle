@@ -6,10 +6,9 @@ const Extension = Jymfony.Component.DependencyInjection.Extension.Extension;
 const JsFileLoader = Jymfony.Component.DependencyInjection.Loader.JsFileLoader;
 
 const { ConnectionManager } = require('typeorm');
-const url = require('url');
 
 /**
- * @memberOf Jymfony.Bundle.FrameworkBundle.DependencyInjection
+ * @memberOf Jymfony.Bundle.TypeORMBundle.DependencyInjection
  */
 class TypeORMExtension extends Extension {
     /**
@@ -45,18 +44,6 @@ class TypeORMExtension extends Extension {
 
         const connectionMappings = {};
         for (const [name, connection] of __jymfony.getEntries(connections)) {
-            if (connection.url) {
-                const parsed = url.parse(connection.url);
-                connection.driver = __jymfony.rtrim(parsed.protocol, ':');
-
-                const auth = parsed.auth.match(/^([^:]+):((?:\\@|[^@])+)$/);
-                if (null !== auth) {
-                    [ , connection.user, connection.password ] = auth;
-                }
-
-                connection.database = __jymfony.ltrim(parsed.pathname, '/');
-            }
-
             let mappings = [];
             for (const mapping of Object.values(connection.mappings)) {
                 mappings = mappings.concat([ ...this._processNamespace(mapping.namespace, container) ]);
