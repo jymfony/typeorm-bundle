@@ -14,7 +14,7 @@
     "mysql",
     "postgres",
     "data mapper",
-    "active record",
+    "active record"
   ],
   "author": "Alessandro Chitolina <alekitto@gmail.com>",
   "license": "MIT",
