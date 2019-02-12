@@ -11,7 +11,7 @@ class Configuration extends implementationOf(ConfigurationInterface) {
      * @inheritdoc
      */
     get configTreeBuilder() {
-        const treeBuilder = new TreeBuilder('type_orm');
+        const treeBuilder = new TreeBuilder('typeorm');
         const rootNode = treeBuilder.rootNode;
 
         this._addConnections(rootNode);

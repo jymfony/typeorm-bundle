@@ -30,6 +30,13 @@ class TypeORMExtension extends Extension {
     }
 
     /**
+     * @inheritdoc
+     */
+    get alias() {
+        return 'typeorm';
+    }
+
+    /**
      * Process connections configuration options.
      *
      * @param {Object.<string, *>} connections

@@ -1,3 +1,4 @@
+const TypeORMExtension = Jymfony.Bundle.TypeORMBundle.DependencyInjection.TypeORMExtension;
 const Bundle = Jymfony.Component.Kernel.Bundle;
 const { useContainer } = require('typeorm');
 
@@ -12,6 +13,13 @@ class TypeORMBundle extends Bundle {
      */
     async boot() {
         useContainer(this._container);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    getContainerExtension() {
+        return new TypeORMExtension();
     }
 }
 
