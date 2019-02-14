@@ -31,6 +31,15 @@ class ConnectionManager extends Base {
     }
 
     /**
+     * Sets the logger for this manager.
+     *
+     * @param {Jymfony.Bundle.TypeORMBundle.Logger.Logger} logger
+     */
+    setLogger(logger) {
+        this._logger = logger;
+    }
+
+    /**
      * @inheritdoc
      */
     has(name) {
