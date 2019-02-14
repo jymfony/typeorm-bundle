@@ -59,3 +59,5 @@ You can also optionally specify the name of a connection to create the database 
         io.success('Done');
     }
 }
+
+module.exports = DatabaseCreateCommand;
