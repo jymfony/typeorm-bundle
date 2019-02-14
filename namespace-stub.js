@@ -14,6 +14,11 @@ Jymfony.Bundle.TypeORMBundle = {
     /**
      * @namespace
      */
+    Console: {},
+
+    /**
+     * @namespace
+     */
     DependencyInjection: {},
 
     /**

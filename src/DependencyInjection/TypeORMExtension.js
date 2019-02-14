@@ -20,6 +20,10 @@ class TypeORMExtension extends Extension {
         loader.load('connection.js');
         loader.load('manager.js');
 
+        if (ReflectionClass.exists('Jymfony.Component.Console.Command.Command')) {
+            loader.load('console.js');
+        }
+
         // Needed for container injection in TypeORM
         container.setAlias(ConnectionManager, new Alias(Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager, true));
 

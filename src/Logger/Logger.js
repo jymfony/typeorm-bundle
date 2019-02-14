@@ -19,9 +19,11 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     logQuery(query, parameters, queryRunner) {
-        this._logger.debug('[SQL] ' + query, {
-            parameters
-        });
+        if (this._logger) {
+            this._logger.debug('[SQL] ' + query, {
+                parameters
+            });
+        }
     }
 
     /**
@@ -33,10 +35,12 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     logQueryError(error, query, parameters, queryRunner) {
-        this._logger.error(error, {
-            parameters,
-            query,
-        });
+        if (this._logger) {
+            this._logger.error(error, {
+                parameters,
+                query,
+            });
+        }
     }
 
     /**
@@ -48,11 +52,13 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     logQuerySlow(time, query, parameters, queryRunner) {
-        this._logger.warning(__jymfony.sprintf('Slow query detected. Time: %s', time.toString()), {
-            time,
-            query,
-            parameters,
-        });
+        if (this._logger) {
+            this._logger.warning(__jymfony.sprintf('Slow query detected. Time: %s', time.toString()), {
+                time,
+                query,
+                parameters,
+            });
+        }
     }
 
     /**
@@ -62,7 +68,9 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     logSchemaBuild(message, queryRunner) {
-        this._logger.debug('[Schema] ' + message);
+        if (this._logger) {
+            this._logger.debug('[Schema] ' + message);
+        }
     }
 
     /**
@@ -72,7 +80,9 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     logMigration(message, queryRunner) {
-        this._logger.debug('[Migration] ' + message);
+        if (this._logger) {
+            this._logger.debug('[Migration] ' + message);
+        }
     }
 
     /**
@@ -84,6 +94,10 @@ class Logger {
      * @param {QueryRunner} queryRunner
      */
     log(level, message, queryRunner) {
+        if (! this._logger) {
+            return;
+        }
+
         let method = 'debug';
         switch (level) {
             case 'log':
