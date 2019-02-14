@@ -1,6 +1,3 @@
-const LoggerAwareInterface = Jymfony.Component.Logger.LoggerAwareInterface;
-const LoggerAwareTrait = Jymfony.Component.Logger.LoggerAwareTrait;
-
 const url = require('url');
 const typeorm = require('typeorm');
 const Base = typeorm.ConnectionManager;
@@ -9,7 +6,7 @@ const EntitySchema = typeorm.EntitySchema;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
  */
-class ConnectionManager extends mix(Base, LoggerAwareInterface, LoggerAwareTrait) {
+class ConnectionManager extends Base {
     /**
      * Constructor.
      *
