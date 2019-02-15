@@ -56,12 +56,12 @@ class ConnectionManager extends Base {
                 const parsed = url.parse(connection.url);
                 connection.driver = __jymfony.rtrim(String(parsed.protocol), ':');
 
-                const auth = parsed.auth.match(/^([^:]+):((?:\\@|[^@])+)$/);
+                const auth = parsed.auth ? parsed.auth.match(/^([^:]+):((?:\\@|[^@])+)$/) : null;
                 if (null !== auth) {
                     [ , connection.user, connection.password ] = auth;
                 }
 
-                connection.database = __jymfony.ltrim(parsed.pathname, '/');
+                connection.database = connection.driver !== 'sqlite' ? __jymfony.ltrim(parsed.pathname, '/') : parsed.pathname;
                 connection.host = parsed.hostname;
                 connection.port = parsed.port;
             }
