@@ -1,4 +1,4 @@
-const Connection = Jymfony.Bundle.Connection.Connection;
+const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const url = require('url');
 const typeorm = require('typeorm');
 const Base = typeorm.ConnectionManager;

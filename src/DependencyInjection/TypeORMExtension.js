@@ -31,7 +31,7 @@ class TypeORMExtension extends Extension {
         const config = this._processConfiguration(configuration, configs);
 
         this._processConnections(config, container);
-        config.getDefinition(Jymfony.Bundle.TypeORMBundle.ManagerRegistry).addArgument(config.default_connection);
+        container.getDefinition(Jymfony.Bundle.TypeORMBundle.ManagerRegistry).addArgument(config.default_connection);
     }
 
     /**
