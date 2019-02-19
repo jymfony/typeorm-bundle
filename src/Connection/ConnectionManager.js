@@ -123,6 +123,24 @@ class ConnectionManager extends Base {
                 schema.columns[key] = columnDefinition;
             }
 
+            for (const relation of Object.values(schema.relations)) {
+                let target = relation.target;
+                if (isFunction(target) && ! ReflectionClass.exists(target)) {
+                    target = target();
+                }
+
+                if (! isFunction(target)) {
+                    continue;
+                }
+
+                try {
+                    const reflClass = new ReflectionClass(target);
+                    relation.target = () => reflClass.constructor;
+                } catch (e) {
+                    // Do nothing
+                }
+            }
+
             yield new EntitySchema(schema);
         }
     }
