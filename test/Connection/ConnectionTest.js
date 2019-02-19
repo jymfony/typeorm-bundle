@@ -25,6 +25,6 @@ describe('Connection', function () {
 
         const metadata = connection.findMetadata(Foo);
         expect(metadata).to.be.not.undefined;
-        expect(metadata.target).to.be.equal(Foo);
+        expect(metadata.target).to.be.equal(fooSchema.target);
     })
 });
