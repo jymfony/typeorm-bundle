@@ -30,7 +30,8 @@ class TypeORMExtension extends Extension {
         const configuration = this.getConfiguration(container);
         const config = this._processConfiguration(configuration, configs);
 
-        this._processConnections(config.connections, container);
+        this._processConnections(config, container);
+        config.getDefinition(Jymfony.Bundle.TypeORMBundle.ManagerRegistry).addArgument(config.default_connection);
     }
 
     /**
@@ -43,12 +44,13 @@ class TypeORMExtension extends Extension {
     /**
      * Process connections configuration options.
      *
-     * @param {Object.<string, *>} connections
+     * @param {*} config
      * @param {Jymfony.Component.DependencyInjection.ContainerBuilder} container
      *
      * @private
      */
-    _processConnections(connections, container) {
+    _processConnections(config, container) {
+        const connections = config.connections;
         if (0 === Object.keys(connections).length) {
             throw new InvalidConfigurationException('No connection has been defined in TypeORM configuration');
         }
@@ -67,6 +69,7 @@ class TypeORMExtension extends Extension {
         container
             .getDefinition(Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager)
             .addArgument(connectionMappings)
+            .addArgument(config.default_connection)
         ;
     }
 

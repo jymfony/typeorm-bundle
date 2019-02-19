@@ -1,7 +1,8 @@
+const Connection = Jymfony.Bundle.Connection.Connection;
 const url = require('url');
 const typeorm = require('typeorm');
 const Base = typeorm.ConnectionManager;
-const EntitySchema = typeorm.EntitySchema;
+const { EntitySchema, AlreadyHasActiveConnectionError } = typeorm;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -11,8 +12,9 @@ class ConnectionManager extends Base {
      * Constructor.
      *
      * @param {Object.<string, *>} connections
+     * @param {string} defaultConnection
      */
-    constructor(connections) {
+    constructor(connections, defaultConnection) {
         super();
 
         /**
@@ -21,6 +23,13 @@ class ConnectionManager extends Base {
          * @private
          */
         this._connections = connections;
+
+        /**
+         * @type {string}
+         *
+         * @private
+         */
+        this._defaultConnection = defaultConnection;
 
         /**
          * @type {Jymfony.Bundle.TypeORMBundle.Logger.Logger}
@@ -43,6 +52,8 @@ class ConnectionManager extends Base {
      * @inheritdoc
      */
     has(name) {
+        name = name || this._defaultConnection;
+
         return undefined !== this._connections[name] || super.has(name);
     }
 
@@ -50,6 +61,7 @@ class ConnectionManager extends Base {
      * @inheritdoc
      */
     get(name) {
+        name = name || this._defaultConnection;
         if (! super.has(name) && undefined !== this._connections[name]) {
             const connection = this._connections[name];
             if (connection.url) {
@@ -69,7 +81,7 @@ class ConnectionManager extends Base {
             }
 
             const schemas = Array.from(this._getEntitySchemas(name));
-            const con = this.create({
+            return this.create({
                 name,
                 type: connection.driver,
                 host: connection.host,
@@ -81,11 +93,33 @@ class ConnectionManager extends Base {
                 logging: connection.logging,
                 logger: this._logger
             });
-
-            con.buildMetadatas();
         }
 
         return super.get(name);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    create(options) {
+        // check if such connection is already registered
+        const existConnection = this.connections.find(connection => connection.name === (options.name || this._defaultConnection));
+
+        if (existConnection) {
+            // if connection is registered and its not closed then throw an error
+            if (existConnection.isConnected) {
+                throw new AlreadyHasActiveConnectionError(options.name || this._defaultConnection);
+            }
+
+            // if its registered but closed then simply remove it from the manager
+            this.connections.splice(this.connections.indexOf(existConnection), 1);
+        }
+
+        // create a new connection
+        const connection = new Connection(options);
+        this.connections.push(connection);
+
+        return connection;
     }
 
     /**
@@ -123,7 +157,7 @@ class ConnectionManager extends Base {
                 schema.columns[key] = columnDefinition;
             }
 
-            for (const relation of Object.values(schema.relations)) {
+            for (const relation of Object.values(schema.relations || {})) {
                 let target = relation.target;
                 if (isFunction(target) && ! ReflectionClass.exists(target)) {
                     target = target();
