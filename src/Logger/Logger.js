@@ -20,9 +20,9 @@ class Logger {
      */
     logQuery(query, parameters, queryRunner) {
         if (this._logger) {
-            this._logger.debug('[SQL] ' + query, {
+            this._logger.debug('[SQL] ' + query, Object.filter({
                 parameters
-            });
+            }, v => !! v));
         }
     }
 
@@ -36,10 +36,10 @@ class Logger {
      */
     logQueryError(error, query, parameters, queryRunner) {
         if (this._logger) {
-            this._logger.error(error, {
+            this._logger.error(error, Object.filter({
                 parameters,
                 query,
-            });
+            }, v => !! v));
         }
     }
 
@@ -53,11 +53,11 @@ class Logger {
      */
     logQuerySlow(time, query, parameters, queryRunner) {
         if (this._logger) {
-            this._logger.warning(__jymfony.sprintf('Slow query detected. Time: %s', time.toString()), {
+            this._logger.warning(__jymfony.sprintf('Slow query detected. Time: %s', time.toString()), Object.filter({
                 time,
                 query,
                 parameters,
-            });
+            }, v => !! v));
         }
     }
 
