@@ -64,6 +64,8 @@ class ConnectionManager extends Base {
                 connection.database = connection.driver !== 'sqlite' ? __jymfony.ltrim(parsed.pathname, '/') : parsed.pathname;
                 connection.host = parsed.hostname;
                 connection.port = parsed.port;
+            } else if ('sqlite' === connection.driver) {
+                connection.database = connection.database || connection.path;
             }
 
             const schemas = Array.from(this._getEntitySchemas(name));
@@ -111,6 +113,14 @@ class ConnectionManager extends Base {
             schema.target = constructor;
             if (! schema.name) {
                 schema.name = constructor.name;
+            }
+
+            for (const [key, columnDefinition] of __jymfony.getEntries(schema.columns || {})) {
+                if (key[0] === '_' && undefined === columnDefinition.name) {
+                    columnDefinition.name = key.substr(1);
+                }
+
+                schema.columns[key] = columnDefinition;
             }
 
             yield new EntitySchema(schema);

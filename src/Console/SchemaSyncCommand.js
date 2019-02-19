@@ -5,7 +5,7 @@ const JymfonyStyle = Jymfony.Component.Console.Style.JymfonyStyle;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Console
  */
-class DatabaseCreateCommand extends Command {
+class SchemaSyncCommand extends Command {
     /**
      * Constructor.
      *
@@ -26,15 +26,14 @@ class DatabaseCreateCommand extends Command {
      * @inheritdoc
      */
     configure() {
-        this.name = 'typeorm:database:create';
-        this.description = 'Creates database';
-        this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection for which the database should be created');
-        this.addOption('if-not-exists', null, InputOption.VALUE_NONE, 'Do not throw error if database already exists');
-        this.help = `The <info>%command.name%</info> command creates the default connections database:
+        this.name = 'typeorm:schema:sync';
+        this.description = 'Syncs schema to database';
+        this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection used to sync the schema');
+        this.help = `The <info>%command.name%</info> command synchronizes the schema to the one generated from entities metadata:
 
     <info>%command.full_name%</info>
 
-You can also optionally specify the name of a connection to create the database for:
+You can also optionally specify the name of a connection to sync the schema for:
 
     <info>%command.full_name% --connection=default</info>
 `;
@@ -45,7 +44,7 @@ You can also optionally specify the name of a connection to create the database 
      */
     async execute(input, output) {
         const io = new JymfonyStyle(input, output);
-        io.title('TypeORM - Create database');
+        io.title('TypeORM - Sync schema');
 
         const connectionName = input.getOption('connection');
         const connection = this._managerRegistry.getConnection(connectionName);
@@ -54,11 +53,9 @@ You can also optionally specify the name of a connection to create the database 
             await connection.connect();
         }
 
-        const queryRunner = connection.createQueryRunner();
-        await queryRunner.createDatabase(connection.options.database.toString(), input.hasOption('if-not-exists'));
-
+        await connection.synchronize();
         io.success('Done');
     }
 }
 
-module.exports = DatabaseCreateCommand;
+module.exports = SchemaSyncCommand;

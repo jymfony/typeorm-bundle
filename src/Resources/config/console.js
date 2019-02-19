@@ -7,3 +7,9 @@ container.register(Jymfony.Bundle.TypeORMBundle.Console.DatabaseCreateCommand)
     .setPublic(true)
     .addTag('console.command')
 ;
+
+container.register(Jymfony.Bundle.TypeORMBundle.Console.SchemaSyncCommand)
+    .addArgument(new Reference(Jymfony.Bundle.TypeORMBundle.ManagerRegistry))
+    .setPublic(true)
+    .addTag('console.command')
+;

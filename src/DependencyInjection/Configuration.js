@@ -32,7 +32,7 @@ class Configuration extends implementationOf(ConfigurationInterface) {
                     const others = Object.assign({}, v);
                     const connection = v;
                     for (const [key, value] of __jymfony.getEntries(v)) {
-                        if (-1 !== [ 'url', 'database', 'host', 'port', 'user', 'password', 'options', 'path', 'logging', 'mappings' ].indexOf(key)) {
+                        if (-1 !== [ 'url', 'database', 'host', 'port', 'user', 'password', 'options', 'path', 'logging', 'migrations', 'mappings' ].indexOf(key)) {
                             connection[key] = value;
                             delete others[key];
                         }
@@ -61,6 +61,13 @@ class Configuration extends implementationOf(ConfigurationInterface) {
                         .arrayNode('options').end()
                         .scalarNode('path').info('Path for SQLite database').end()
                         .booleanNode('logging').defaultValue('%kernel.debug%').end()
+                        .arrayNode('migrations')
+                            .arrayPrototype()
+                                .children()
+                                    .scalarNode('directory').defaultValue('%kernel.project_dir%/src/Migrations').end()
+                                .end()
+                            .end()
+                        .end()
                         .arrayNode('mappings')
                             .useAttributeAsKey('name')
                             .arrayPrototype()
