@@ -135,7 +135,7 @@ class ConnectionManager extends Base {
 
                 try {
                     const reflClass = new ReflectionClass(target);
-                    relation.target = () => reflClass.constructor;
+                    relation.target = () => reflClass.getConstructor();
                 } catch (e) {
                     // Do nothing
                 }
