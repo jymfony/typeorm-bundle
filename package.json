@@ -4,7 +4,7 @@
   "description": "Jymfony TypeORM Bundle",
   "main": "index.js",
   "scripts": {
-    "test": "node ./tests.js test/**/*Test.js"
+    "test": "node ./tests.js test/*Test.js test/**/*Test.js"
   },
   "keywords": [
     "jymfony bundle",
@@ -31,6 +31,7 @@
     "@jymfony/debug": "https://github.com/jymfony/debug.git",
     "@jymfony/dependency-injection": "https://github.com/jymfony/dependency-injection.git",
     "@jymfony/logger": "https://github.com/jymfony/logger.git",
+    "@jymfony/testing": "https://github.com/jymfony/testing.git",
     "chai": "^3.5.0",
     "mocha": "^5.0",
     "sqlite3": "^4.0"

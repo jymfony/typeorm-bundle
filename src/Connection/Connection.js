@@ -1,6 +1,8 @@
+const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
+
 const typeorm = require('typeorm');
 const Base = typeorm.Connection;
-const { EntitySchema } = typeorm;
+const { AbstractRepository, EntitySchema, Repository, getMetadataArgsStorage } = typeorm;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -9,6 +11,13 @@ class Connection extends Base {
     constructor(options) {
         super(options);
         this.buildMetadatas();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    createEntityManager(queryRunner) {
+        return new EntityManager(this, queryRunner);
     }
 
     /**
@@ -38,6 +47,33 @@ class Connection extends Base {
 
             return false;
         });
+    }
+
+    /**
+     * @inheritdoc
+     */
+    buildMetadatas() {
+        super.buildMetadatas();
+
+        for (const entitySchema of this.options.entities || []) {
+            const repository = entitySchema.options.repository;
+            if (! repository) {
+                continue;
+            }
+
+            const entity = entitySchema.options.target;
+            const entityClass = new ReflectionClass(entity);
+
+            const reflClass = new ReflectionClass(entitySchema.options.repository);
+            if (! reflClass.isSubclassOf(AbstractRepository) && ! reflClass.isSubclassOf(Repository) ) {
+                throw new LogicException(__jymfony.sprintf('"%s" is not a subclass of Repository', reflClass.name));
+            }
+
+            getMetadataArgsStorage().entityRepositories.push({
+                target: entityClass.getConstructor(),
+                entity: entitySchema.target,
+            });
+        }
     }
 }
 

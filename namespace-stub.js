@@ -24,5 +24,15 @@ Jymfony.Bundle.TypeORMBundle = {
     /**
      * @namespace
      */
+    Exception: {},
+
+    /**
+     * @namespace
+     */
     Logger: {},
+
+    /**
+     * @namespace
+     */
+    Repository: {},
 };

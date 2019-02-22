@@ -1,3 +1,5 @@
+const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
+
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Fixtures.Entity
  */
@@ -12,7 +14,8 @@ class Foo {
             columns: {
                 _id: { type: Number, primary: true, generated: true },
                 _name: { type: String, nullable: false },
-            }
+            },
+            repository: FooRepository,
         };
     }
 }
