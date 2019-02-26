@@ -10,6 +10,8 @@ const { AbstractRepository, EntitySchema, Repository, getMetadataArgsStorage } =
 class Connection extends Base {
     constructor(options) {
         super(options);
+
+        this._metadataBuilt = false;
         this.buildMetadatas();
     }
 
@@ -53,6 +55,11 @@ class Connection extends Base {
      * @inheritdoc
      */
     buildMetadatas() {
+        if (this._metadataBuilt) {
+            return;
+        }
+
+        this._metadataBuilt = true;
         super.buildMetadatas();
 
         for (const entitySchema of this.options.entities || []) {
@@ -70,8 +77,8 @@ class Connection extends Base {
             }
 
             getMetadataArgsStorage().entityRepositories.push({
-                target: entityClass.getConstructor(),
-                entity: entitySchema.target,
+                target: reflClass.getConstructor(),
+                entity: entityClass.getConstructor(),
             });
         }
     }
