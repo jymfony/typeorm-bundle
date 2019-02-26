@@ -34,5 +34,10 @@ Jymfony.Bundle.TypeORMBundle = {
     /**
      * @namespace
      */
+    Metadata: {},
+
+    /**
+     * @namespace
+     */
     Repository: {},
 };

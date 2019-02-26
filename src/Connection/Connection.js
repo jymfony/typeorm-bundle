@@ -1,8 +1,15 @@
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
+const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;
 
 const typeorm = require('typeorm');
 const Base = typeorm.Connection;
-const { AbstractRepository, EntitySchema, Repository, getMetadataArgsStorage } = typeorm;
+const {
+    AbstractRepository,
+    EntitySchema,
+    Repository,
+    getMetadataArgsStorage
+} = typeorm;
+const { EntityMetadataValidator } = require('typeorm/metadata-builder/EntityMetadataValidator');
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -60,7 +67,24 @@ class Connection extends Base {
         }
 
         this._metadataBuilt = true;
-        super.buildMetadatas();
+
+        const connectionMetadataBuilder = new ConnectionMetadataBuilder(this);
+        const entityMetadataValidator = new EntityMetadataValidator();
+
+        // create subscribers instances if they are not disallowed from high-level (for example they can disallowed from migrations run process)
+        const subscribers = connectionMetadataBuilder.buildSubscribers(this.options.subscribers || []);
+        Object.assign(this, { subscribers: subscribers });
+
+        // build entity metadatas
+        const entityMetadatas = connectionMetadataBuilder.buildEntityMetadatas(this.options.entities || []);
+        Object.assign(this, { entityMetadatas: entityMetadatas });
+
+        // create migration instances
+        const migrations = connectionMetadataBuilder.buildMigrations(this.options.migrations || []);
+        Object.assign(this, { migrations: migrations });
+
+        // validate all created entity metadatas to make sure user created entities are valid and correct
+        entityMetadataValidator.validateMany(this.entityMetadatas, this.driver);
 
         for (const entitySchema of this.options.entities || []) {
             const repository = entitySchema.options.repository;
