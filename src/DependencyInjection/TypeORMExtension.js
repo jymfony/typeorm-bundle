@@ -88,7 +88,7 @@ class TypeORMExtension extends Extension {
 
         for (const baseDir of namespace.directories) {
             const prefixLen = baseDir.length + 1;
-            const resource = new GlobResource(baseDir, '**/*.js');
+            const resource = new GlobResource(baseDir, '/**/*.js');
             container.addResource(resource);
 
             for (const file of resource) {
