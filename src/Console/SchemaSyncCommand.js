@@ -29,6 +29,7 @@ class SchemaSyncCommand extends Command {
         this.name = 'typeorm:schema:sync';
         this.description = 'Syncs schema to database';
         this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection used to sync the schema');
+        this.addOption('dry-run', 'd', InputOption.VALUE_NONE, 'Do not execute the queries, just print them out');
         this.help = `The <info>%command.name%</info> command synchronizes the schema to the one generated from entities metadata:
 
     <info>%command.full_name%</info>
@@ -53,8 +54,16 @@ You can also optionally specify the name of a connection to sync the schema for:
             await connection.connect();
         }
 
-        await connection.synchronize();
-        io.success('Done');
+        const sqlInMemory = await connection.driver.createSchemaBuilder().log();
+        if (0 === sqlInMemory.upQueries.length) {
+            io.comment('<notice>Your schema is up to date</notice>')
+        } else if (input.hasOption('dry-run')) {
+            io.note('Schema synchronization will execute the following queries');
+            io.writeln(sqlInMemory.upQueries.map(__jymfony.trim));
+        } else {
+            await connection.synchronize();
+            io.success('Done');
+        }
     }
 }
 
