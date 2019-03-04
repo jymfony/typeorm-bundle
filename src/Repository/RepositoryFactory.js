@@ -1,4 +1,4 @@
-const { MongoDriver } = require("typeorm/driver/mongodb/MongoDriver");
+const { MongoDriver } = require('typeorm/driver/mongodb/MongoDriver');
 const { getMetadataArgsStorage, AbstractRepository, Repository, MongoRepository, TreeRepository } = require('typeorm');
 
 /**
@@ -31,7 +31,7 @@ class RepositoryFactory {
             repository = new repositoryClass(manager, metadata);
         } else if (metadata.treeType) {
             // NOTE: dynamic access to protected properties. We need this to prevent unwanted properties in those classes to be exposed,
-            // however we need these properties for internal work of the class
+            // However we need these properties for internal work of the class
             repository = new TreeRepository();
 
             Object.assign(repository, {
@@ -39,7 +39,7 @@ class RepositoryFactory {
             });
         } else {
             // NOTE: dynamic access to protected properties. We need this to prevent unwanted properties in those classes to be exposed,
-            // however we need these properties for internal work of the class
+            // However we need these properties for internal work of the class
             repository = manager.connection.driver instanceof MongoDriver ? new MongoRepository() : new Repository();
 
             Object.assign(repository, {

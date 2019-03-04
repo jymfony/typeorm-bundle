@@ -5,39 +5,54 @@
 /**
  * @namespace
  */
-Jymfony.Bundle.TypeORMBundle = {
+Jymfony = {
     /**
      * @namespace
      */
-    Connection: {},
+    Bundle: {
+        /**
+         * @namespace
+         */
+        TypeORMBundle: {
+            /**
+             * @namespace
+             */
+            Connection: {},
 
-    /**
-     * @namespace
-     */
-    Console: {},
+            /**
+             * @namespace
+             */
+            Console: {},
 
-    /**
-     * @namespace
-     */
-    DependencyInjection: {},
+            /**
+             * @namespace
+             */
+            DependencyInjection: {},
 
-    /**
-     * @namespace
-     */
-    Exception: {},
+            /**
+             * @namespace
+             */
+            Exception: {},
 
-    /**
-     * @namespace
-     */
-    Logger: {},
+            /**
+             * @namespace
+             */
+            Logger: {},
 
-    /**
-     * @namespace
-     */
-    Metadata: {},
+            /**
+             * @namespace
+             */
+            Metadata: {},
 
-    /**
-     * @namespace
-     */
-    Repository: {},
+            /**
+             * @namespace
+             */
+            Repository: {},
+
+            /**
+             * @namespace
+             */
+            Utils: {},
+        },
+    },
 };

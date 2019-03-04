@@ -73,7 +73,7 @@ class ConnectionManager extends Base {
                     [ , connection.user, connection.password ] = auth;
                 }
 
-                connection.database = connection.driver !== 'sqlite' ? __jymfony.ltrim(parsed.pathname, '/') : parsed.pathname;
+                connection.database = 'sqlite' !== connection.driver ? __jymfony.ltrim(parsed.pathname, '/') : parsed.pathname;
                 connection.host = parsed.hostname;
                 connection.port = parsed.port;
             } else if ('sqlite' === connection.driver) {
@@ -91,7 +91,7 @@ class ConnectionManager extends Base {
                 database: connection.database,
                 entities: schemas,
                 logging: connection.logging,
-                logger: this._logger
+                logger: this._logger,
             });
         }
 
@@ -102,20 +102,20 @@ class ConnectionManager extends Base {
      * @inheritdoc
      */
     create(options) {
-        // check if such connection is already registered
+        // Check if such connection is already registered
         const existConnection = this.connections.find(connection => connection.name === (options.name || this._defaultConnection));
 
         if (existConnection) {
-            // if connection is registered and its not closed then throw an error
+            // If connection is registered and its not closed then throw an error
             if (existConnection.isConnected) {
                 throw new AlreadyHasActiveConnectionError(options.name || this._defaultConnection);
             }
 
-            // if its registered but closed then simply remove it from the manager
+            // If its registered but closed then simply remove it from the manager
             this.connections.splice(this.connections.indexOf(existConnection), 1);
         }
 
-        // create a new connection
+        // Create a new connection
         const connection = new Connection(options);
         this.connections.push(connection);
 
@@ -149,31 +149,31 @@ class ConnectionManager extends Base {
                 schema.name = constructor.name;
             }
 
-            for (const [key, columnDefinition] of __jymfony.getEntries(schema.columns || {})) {
-                if (key[0] === '_' && undefined === columnDefinition.name) {
+            for (const [ key, columnDefinition ] of __jymfony.getEntries(schema.columns || {})) {
+                if ('_' === key[0] && undefined === columnDefinition.name) {
                     columnDefinition.name = key.substr(1);
                 }
 
                 schema.columns[key] = columnDefinition;
             }
 
-            for (const relation of Object.values(schema.relations || {})) {
-                let target = relation.target;
-                if (isFunction(target) && ! ReflectionClass.exists(target)) {
-                    target = target();
-                }
-
-                if (! isFunction(target)) {
-                    continue;
-                }
-
-                try {
-                    const reflClass = new ReflectionClass(target);
-                    relation.target = () => reflClass.getConstructor();
-                } catch (e) {
-                    // Do nothing
-                }
-            }
+            // For (const relation of Object.values(schema.relations || {})) {
+            //     Let target = relation.target;
+            //     If (isFunction(target) && ! ReflectionClass.exists(target)) {
+            //         Target = target();
+            //     }
+            //
+            //     If (! isFunction(target)) {
+            //         Continue;
+            //     }
+            //
+            //     Try {
+            //         Const reflClass = new ReflectionClass(target);
+            //         Relation.target = () => reflClass.getConstructor();
+            //     } catch (e) {
+            //         // Do nothing
+            //     }
+            // }
 
             yield new EntitySchema(schema);
         }

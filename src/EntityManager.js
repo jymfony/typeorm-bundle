@@ -19,7 +19,7 @@ class EntityManager extends Base {
     }
 
     getRepository(target) {
-        // throw exception if there is no repository with this target registered
+        // Throw exception if there is no repository with this target registered
         if (! this.connection.hasMetadata(target)) {
             throw new RepositoryNotFoundError(this.connection.name, target);
         }

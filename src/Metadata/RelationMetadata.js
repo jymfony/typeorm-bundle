@@ -1,6 +1,27 @@
 const Base = require('typeorm/metadata/RelationMetadata').RelationMetadata;
 
+/**
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
+ */
 class RelationMetadata extends Base {
+    constructor(options) {
+        let type = options.args.type;
+        if (isFunction(type)) {
+            type = ! ReflectionClass.exists(type) ? type() : type;
+
+            try {
+                const reflClass = new ReflectionClass(type);
+                type = () => reflClass.getConstructor();
+            } catch (e) {
+                // Do nothing
+            }
+        }
+
+        options.args.type = type;
+        super(options);
+
+    }
+
     /**
      * @inheritdoc
      */
@@ -30,7 +51,7 @@ class RelationMetadata extends Base {
             return this.entityMetadata.treeParentRelation.propertyName;
         }
 
-        return "";
+        return '';
     }
 }
 

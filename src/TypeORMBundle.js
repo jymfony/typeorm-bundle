@@ -1,5 +1,6 @@
 const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager;
 const TypeORMExtension = Jymfony.Bundle.TypeORMBundle.DependencyInjection.TypeORMExtension;
+const FindOptionsUtils = Jymfony.Bundle.TypeORMBundle.Utils.FindOptionsUtils;
 const Bundle = Jymfony.Component.Kernel.Bundle;
 const { useContainer } = require('typeorm');
 
@@ -13,6 +14,7 @@ class TypeORMBundle extends Bundle {
      * @inheritdoc
      */
     async boot() {
+        FindOptionsUtils.patch();
         useContainer(this._container);
     }
 

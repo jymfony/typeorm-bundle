@@ -10,12 +10,12 @@ const { OrmUtils } = require('typeorm/util/OrmUtils');
  */
 class ConnectionMetadataBuilder extends Base {
     buildEntityMetadatas(entities) {
-        const [entityClassesOrSchemas, entityDirectories] = OrmUtils.splitClassesAndStrings(entities || []);
-        const entityClasses = entityClassesOrSchemas.filter(entityClass => (entityClass instanceof EntitySchema) === false);
+        const [ entityClassesOrSchemas, entityDirectories ] = OrmUtils.splitClassesAndStrings(entities || []);
+        const entityClasses = entityClassesOrSchemas.filter(entityClass => false === (entityClass instanceof EntitySchema));
         const entitySchemas = entityClassesOrSchemas.filter(entityClass => entityClass instanceof EntitySchema);
 
-        const allEntityClasses = [...entityClasses, ...importClassesFromDirectories(entityDirectories)];
-        allEntityClasses.forEach(entityClass => { // if we have entity schemas loaded from directories
+        const allEntityClasses = [ ...entityClasses, ...importClassesFromDirectories(entityDirectories) ];
+        allEntityClasses.forEach(entityClass => { // If we have entity schemas loaded from directories
             if (entityClass instanceof EntitySchema) {
                 entitySchemas.push(entityClass);
                 allEntityClasses.slice(allEntityClasses.indexOf(entityClass), 1);
@@ -26,7 +26,7 @@ class ConnectionMetadataBuilder extends Base {
         const metadataArgsStorageFromSchema = new EntitySchemaTransformer().transform(entitySchemas);
         const schemaEntityMetadatas = new EntityMetadataBuilder(this.connection, metadataArgsStorageFromSchema).build();
 
-        return [...decoratorEntityMetadatas, ...schemaEntityMetadatas];
+        return [ ...decoratorEntityMetadatas, ...schemaEntityMetadatas ];
     }
 }
 

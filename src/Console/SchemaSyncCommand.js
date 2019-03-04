@@ -56,7 +56,7 @@ You can also optionally specify the name of a connection to sync the schema for:
 
         const sqlInMemory = await connection.driver.createSchemaBuilder().log();
         if (0 === sqlInMemory.upQueries.length) {
-            io.comment('<notice>Your schema is up to date</notice>')
+            io.comment('<notice>Your schema is up to date</notice>');
         } else if (input.hasOption('dry-run')) {
             io.note('Schema synchronization will execute the following queries');
             io.writeln(sqlInMemory.upQueries.map(__jymfony.trim));

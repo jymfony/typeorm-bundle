@@ -21,7 +21,7 @@ class Logger {
     logQuery(query, parameters, queryRunner) {
         if (this._logger) {
             this._logger.debug('[SQL] ' + query, Object.filter({
-                parameters
+                parameters,
             }, v => !! v));
         }
     }

@@ -31,7 +31,7 @@ class Configuration extends implementationOf(ConfigurationInterface) {
                 .then(v => {
                     const others = Object.assign({}, v);
                     const connection = v;
-                    for (const [key, value] of __jymfony.getEntries(v)) {
+                    for (const [ key, value ] of __jymfony.getEntries(v)) {
                         if (-1 !== [ 'url', 'database', 'host', 'port', 'user', 'password', 'options', 'path', 'logging', 'migrations', 'mappings' ].indexOf(key)) {
                             connection[key] = value;
                             delete others[key];
@@ -82,14 +82,14 @@ class Configuration extends implementationOf(ConfigurationInterface) {
                                 .performNoDeepMerging()
                                 .children()
                                     .scalarNode('mapping').defaultTrue().end()
-                                    .enumNode('type').values(['static_js']).end()
+                                    .enumNode('type').values([ 'static_js' ]).end()
                                     .scalarNode('namespace').end()
                                 .end()
                             .end()
                         .end()
                     .end()
                     .validate()
-                        .ifTrue(v => Object.keys(v.mappings).length === 0)
+                        .ifTrue(v => 0 === Object.keys(v.mappings).length)
                         .thenInvalid('At least one mapping is required for connection')
                     .end()
                 .end()

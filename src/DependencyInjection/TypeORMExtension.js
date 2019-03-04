@@ -56,7 +56,7 @@ class TypeORMExtension extends Extension {
         }
 
         const connectionMappings = {};
-        for (const [name, connection] of __jymfony.getEntries(connections)) {
+        for (const [ name, connection ] of __jymfony.getEntries(connections)) {
             let mappings = [];
             for (const mapping of Object.values(connection.mappings)) {
                 mappings = mappings.concat([ ...this._processNamespace(mapping.namespace, container) ]);
@@ -107,7 +107,7 @@ class TypeORMExtension extends Extension {
      * @private
      */
     static _getNamespaceObject(namespace) {
-        const recursiveGet = (parts) =>  {
+        const recursiveGet = (parts) => {
             let start = global;
             let part;
 

@@ -1,10 +1,9 @@
-const Related = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Related;
-const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
+const Foo = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Foo;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Fixtures.Entity
  */
-class Foo {
+class Related {
     /**
      * Gets the entity schema.
      *
@@ -17,15 +16,14 @@ class Foo {
                 _name: { type: String, nullable: false },
             },
             relations: {
-                _related: {
-                    target: Related,
+                _foo: {
+                    target: Foo,
                     type: 'one-to-one',
                     eager: true,
                 },
             },
-            repository: FooRepository,
         };
     }
 }
 
-module.exports = Foo;
+module.exports = Related;

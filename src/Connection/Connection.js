@@ -1,5 +1,6 @@
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;
+const EntityMetadataValidator = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataValidator;
 
 const typeorm = require('typeorm');
 const Base = typeorm.Connection;
@@ -7,9 +8,8 @@ const {
     AbstractRepository,
     EntitySchema,
     Repository,
-    getMetadataArgsStorage
+    getMetadataArgsStorage,
 } = typeorm;
-const { EntityMetadataValidator } = require('typeorm/metadata-builder/EntityMetadataValidator');
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -47,11 +47,11 @@ class Connection extends Base {
             }
 
             if (isString(target)) {
-                if (target.indexOf(".") !== -1) {
+                if (-1 !== target.indexOf('.')) {
                     return metadata.tablePath === target;
-                } else {
-                    return metadata.name === target || metadata.tableName === target;
                 }
+                return metadata.name === target || metadata.tableName === target;
+
             }
 
             return false;
@@ -71,19 +71,19 @@ class Connection extends Base {
         const connectionMetadataBuilder = new ConnectionMetadataBuilder(this);
         const entityMetadataValidator = new EntityMetadataValidator();
 
-        // create subscribers instances if they are not disallowed from high-level (for example they can disallowed from migrations run process)
+        // Create subscribers instances if they are not disallowed from high-level (for example they can disallowed from migrations run process)
         const subscribers = connectionMetadataBuilder.buildSubscribers(this.options.subscribers || []);
         Object.assign(this, { subscribers: subscribers });
 
-        // build entity metadatas
+        // Build entity metadatas
         const entityMetadatas = connectionMetadataBuilder.buildEntityMetadatas(this.options.entities || []);
         Object.assign(this, { entityMetadatas: entityMetadatas });
 
-        // create migration instances
+        // Create migration instances
         const migrations = connectionMetadataBuilder.buildMigrations(this.options.migrations || []);
         Object.assign(this, { migrations: migrations });
 
-        // validate all created entity metadatas to make sure user created entities are valid and correct
+        // Validate all created entity metadatas to make sure user created entities are valid and correct
         entityMetadataValidator.validateMany(this.entityMetadatas, this.driver);
 
         for (const entitySchema of this.options.entities || []) {
