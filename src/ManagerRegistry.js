@@ -1,4 +1,4 @@
-const { getConnectionManager, Connection } = require('typeorm');
+const { Connection } = require('typeorm');
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle
@@ -7,15 +7,15 @@ class ManagerRegistry {
     /**
      * Constructor.
      *
-     * @param {string} defaultConnection
+     * @param {Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager} connectionManager
      */
-    __construct(defaultConnection = 'default') {
+    __construct(connectionManager) {
         /**
-         * @type {string}
+         * @type {Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager}
          *
          * @private
          */
-        this._defaultConnection = defaultConnection;
+        this._connectionManager = connectionManager;
     }
 
     /**
@@ -27,10 +27,7 @@ class ManagerRegistry {
      * @returns {Connection}
      */
     getConnection(name = undefined) {
-        name = name || this._defaultConnection;
-        const connectionManager = getConnectionManager();
-
-        return connectionManager.get(name);
+        return this._connectionManager.get(name);
     }
 
     /**

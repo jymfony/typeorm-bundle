@@ -18,6 +18,9 @@ class EntityManager extends Base {
         this._repositoryFactory = undefined;
     }
 
+    /**
+     * @inheritdoc
+     */
     getRepository(target) {
         // Throw exception if there is no repository with this target registered
         if (! this.connection.hasMetadata(target)) {

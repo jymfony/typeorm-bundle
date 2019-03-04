@@ -157,24 +157,6 @@ class ConnectionManager extends Base {
                 schema.columns[key] = columnDefinition;
             }
 
-            // For (const relation of Object.values(schema.relations || {})) {
-            //     Let target = relation.target;
-            //     If (isFunction(target) && ! ReflectionClass.exists(target)) {
-            //         Target = target();
-            //     }
-            //
-            //     If (! isFunction(target)) {
-            //         Continue;
-            //     }
-            //
-            //     Try {
-            //         Const reflClass = new ReflectionClass(target);
-            //         Relation.target = () => reflClass.getConstructor();
-            //     } catch (e) {
-            //         // Do nothing
-            //     }
-            // }
-
             yield new EntitySchema(schema);
         }
     }

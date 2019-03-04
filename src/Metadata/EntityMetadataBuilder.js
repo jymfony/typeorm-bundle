@@ -53,11 +53,11 @@ class EntityMetadataBuilder extends Base {
         if ((tableInheritance && 'STI' === tableInheritance.pattern) || 'entity-child' === tableArgs.type) {
             singleTableChildrenTargets = this._metadataArgsStorage
                 .filterSingleTableChildren(tableArgs.target)
-                .map(function (args) {
+                .map(args => {
                     return args.target;
                 })
-                .filter(function (target) {
-                    return target instanceof Function;
+                .filter(target => {
+                    return isFunction(target);
                 });
 
             inheritanceTree.push(...singleTableChildrenTargets);
@@ -114,7 +114,6 @@ class EntityMetadataBuilder extends Base {
             });
 
         // For table inheritance we need to add a discriminator column
-        //
         if (entityInheritance && entityInheritance.column) {
             const discriminatorColumnName = entityInheritance.column && entityInheritance.column.name ? entityInheritance.column.name : 'type';
             let discriminatorColumn = entityMetadata.ownColumns.find(column => column.propertyName === discriminatorColumnName);

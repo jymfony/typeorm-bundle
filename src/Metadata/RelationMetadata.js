@@ -19,7 +19,6 @@ class RelationMetadata extends Base {
 
         options.args.type = type;
         super(options);
-
     }
 
     /**
