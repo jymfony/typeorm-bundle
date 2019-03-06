@@ -1,5 +1,3 @@
-const { Connection } = require('typeorm');
-
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle
  */

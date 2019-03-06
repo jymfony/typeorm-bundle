@@ -38,7 +38,7 @@ class RelationMetadata extends Base {
 
             if (ReflectionClass.exists(this.entityMetadata.target)) {
                 const inverseSideProperty = this.inverseEntityMetadata.relations
-                    .find(r => r.inverseEntityMetadata.target === this.target);
+                    .find(r => r.inverseEntityMetadata && r.inverseEntityMetadata.target === this.target);
 
                 if (inverseSideProperty) {
                     return inverseSideProperty.propertyName;

@@ -39,6 +39,18 @@ class EntityMetadataBuilder extends Base {
     /**
      * @inheritdoc
      */
+    build(entityClasses) {
+        const metadatas = super.build(entityClasses);
+        for (const metadata of metadatas) {
+            this.computeInverseProperties(metadata, metadatas);
+        }
+
+        return metadatas;
+    }
+
+    /**
+     * @inheritdoc
+     */
     createEntityMetadata(tableArgs) {
         // We take all "inheritance tree" from a target entity to collect all stored metadata args
         // (by decorators or inside entity schemas). For example for target Post < ContentModel < Unit

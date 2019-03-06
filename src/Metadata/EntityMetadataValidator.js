@@ -4,7 +4,7 @@ const Base = require('typeorm/metadata-builder/EntityMetadataValidator').EntityM
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
 class EntityMetadataValidator extends Base {
-    validateEagerRelations(entityMetadatas) {
+    validateEagerRelations(entityMetadatas) { // eslint-disable-line no-unused-vars
         // Do nothing.
     }
 }

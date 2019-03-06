@@ -18,7 +18,7 @@ class Logger {
      * @param {*[]} parameters
      * @param {QueryRunner} queryRunner
      */
-    logQuery(query, parameters, queryRunner) {
+    logQuery(query, parameters, queryRunner) { // eslint-disable-line no-unused-vars
         if (this._logger) {
             this._logger.debug('[SQL] ' + query, Object.filter({
                 parameters,
@@ -34,7 +34,7 @@ class Logger {
      * @param {string} parameters
      * @param {QueryRunner} queryRunner
      */
-    logQueryError(error, query, parameters, queryRunner) {
+    logQueryError(error, query, parameters, queryRunner) { // eslint-disable-line no-unused-vars
         if (this._logger) {
             this._logger.error(error, Object.filter({
                 parameters,
@@ -51,7 +51,7 @@ class Logger {
      * @param {*[]} parameters
      * @param {QueryRunner} queryRunner
      */
-    logQuerySlow(time, query, parameters, queryRunner) {
+    logQuerySlow(time, query, parameters, queryRunner) { // eslint-disable-line no-unused-vars
         if (this._logger) {
             this._logger.warning(__jymfony.sprintf('Slow query detected. Time: %s', time.toString()), Object.filter({
                 time,
@@ -67,7 +67,7 @@ class Logger {
      * @param {string} message
      * @param {QueryRunner} queryRunner
      */
-    logSchemaBuild(message, queryRunner) {
+    logSchemaBuild(message, queryRunner) { // eslint-disable-line no-unused-vars
         if (this._logger) {
             this._logger.debug('[Schema] ' + message);
         }
@@ -79,7 +79,7 @@ class Logger {
      * @param {string} message
      * @param {QueryRunner} queryRunner
      */
-    logMigration(message, queryRunner) {
+    logMigration(message, queryRunner) { // eslint-disable-line no-unused-vars
         if (this._logger) {
             this._logger.debug('[Migration] ' + message);
         }
@@ -93,7 +93,7 @@ class Logger {
      * @param {string} message
      * @param {QueryRunner} queryRunner
      */
-    log(level, message, queryRunner) {
+    log(level, message, queryRunner) { // eslint-disable-line no-unused-vars
         if (! this._logger) {
             return;
         }
