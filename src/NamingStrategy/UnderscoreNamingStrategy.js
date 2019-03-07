@@ -287,8 +287,8 @@ class UnderscoreNamingStrategy {
      */
     _underscore(string) {
         string = string[0] === '_' ? string.substr(1) : string;
-        string = string.replace(/(?<=[a-z])([A-Z])/g, (m, p1) => {
-            return '_' + p1;
+        string = string.replace(/(?:(?<=[a-z0-9])([A-Z])|(?<=[A-Z]{2})([a-z]))/g, (m, p1, p2) => {
+            return '_' + (p1 || p2);
         });
 
         if (this._case === __self.CASE_UPPER) {
