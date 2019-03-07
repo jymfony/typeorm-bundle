@@ -1,7 +1,7 @@
 const EntityMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataBuilder;
+const EntitySchemaTransformer = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchemaTransformer;
 const Base = require('typeorm/connection/ConnectionMetadataBuilder').ConnectionMetadataBuilder;
 const { EntitySchema, getMetadataArgsStorage } = require('typeorm');
-const { EntitySchemaTransformer } = require('typeorm/entity-schema/EntitySchemaTransformer');
 const { importClassesFromDirectories } = require('typeorm/util/DirectoryExportedClassesLoader');
 const { OrmUtils } = require('typeorm/util/OrmUtils');
 

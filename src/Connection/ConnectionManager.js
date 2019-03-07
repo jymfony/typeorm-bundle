@@ -2,7 +2,7 @@ const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const url = require('url');
 const typeorm = require('typeorm');
 const Base = typeorm.ConnectionManager;
-const { EntitySchema, AlreadyHasActiveConnectionError, getMetadataArgsStorage } = typeorm;
+const { EntitySchema, AlreadyHasActiveConnectionError } = typeorm;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -132,11 +132,6 @@ class ConnectionManager extends Base {
      * @private
      */
     * _getEntitySchemas(name) {
-        const metadataArgsStorage = getMetadataArgsStorage();
-
-        const embeddables = [];
-        const schemas = [];
-
         for (const entity of this._connections[name].mappings) {
             if (! ReflectionClass.exists(entity)) {
                 continue;
@@ -154,69 +149,15 @@ class ConnectionManager extends Base {
                 schema.name = reflClass.shortName;
             }
 
-            if (schema.embeddable) {
-                embeddables.push(schema);
-                this._processEmbeddable(schema);
-            } else {
-                schemas.push(schema);
-            }
-        }
-
-        for (const schema of schemas) {
             for (const [ key, columnDefinition ] of __jymfony.getEntries(schema.columns || {})) {
                 if ('_' === key[0] && undefined === columnDefinition.name) {
                     columnDefinition.name = key.substr(1);
                 }
 
-                const columnType = ReflectionClass.exists(columnDefinition.type) && (new ReflectionClass(columnDefinition.type)).getConstructor();
-                if (embeddables.find(s => s.target === columnType)) {
-                    metadataArgsStorage.embeddeds.push({
-                        target: schema.target,
-                        propertyName: key,
-                        isArray: true === columnDefinition.array,
-                        prefix: columnDefinition.prefix,
-                        type: columnType,
-                    });
-
-                    delete schema.columns[key];
-                } else {
-                    schema.columns[key] = columnDefinition;
-                }
+                schema.columns[key] = columnDefinition;
             }
 
             yield new EntitySchema(schema);
-        }
-    }
-
-    /**
-     * Process embeddable entity
-     *
-     * @param {EntitySchemaOptions} entitySchema
-     *
-     * @private
-     */
-    _processEmbeddable(entitySchema) {
-        const metadataArgsStorage = getMetadataArgsStorage();
-
-        for (const [ propertyName, column ] of __jymfony.getEntries(entitySchema.columns)) {
-            if (true === column.unique) {
-                metadataArgsStorage.uniques.push({target: entitySchema.target, columns: [ propertyName ]});
-            }
-
-            metadataArgsStorage.columns.push({
-                target: entitySchema.target,
-                propertyName: propertyName,
-                mode: 'regular',
-                options: column,
-            });
-
-            if (column.generated) {
-                metadataArgsStorage.generations.push({
-                    target: entitySchema.target,
-                    propertyName: propertyName,
-                    strategy: 'uuid' === options.type ? 'uuid' : 'increment',
-                });
-            }
         }
     }
 }

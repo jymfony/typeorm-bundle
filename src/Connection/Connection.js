@@ -1,15 +1,11 @@
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;
 const EntityMetadataValidator = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataValidator;
+const UnderscoreNamingStrategy = Jymfony.Bundle.TypeORMBundle.NamingStrategy.UnderscoreNamingStrategy;
 
 const typeorm = require('typeorm');
 const Base = typeorm.Connection;
-const {
-    AbstractRepository,
-    EntitySchema,
-    Repository,
-    getMetadataArgsStorage,
-} = typeorm;
+const { EntitySchema } = typeorm;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -19,6 +15,7 @@ class Connection extends Base {
         super(options);
 
         this._metadataBuilt = false;
+        this.namingStrategy = new UnderscoreNamingStrategy();
         this.buildMetadatas();
     }
 
@@ -85,26 +82,6 @@ class Connection extends Base {
 
         // Validate all created entity metadatas to make sure user created entities are valid and correct
         entityMetadataValidator.validateMany(this.entityMetadatas, this.driver);
-
-        for (const entitySchema of this.options.entities || []) {
-            const repository = entitySchema.options.repository;
-            if (! repository) {
-                continue;
-            }
-
-            const entity = entitySchema.options.target;
-            const entityClass = new ReflectionClass(entity);
-
-            const reflClass = new ReflectionClass(entitySchema.options.repository);
-            if (! reflClass.isSubclassOf(AbstractRepository) && ! reflClass.isSubclassOf(Repository) ) {
-                throw new LogicException(__jymfony.sprintf('"%s" is not a subclass of Repository', reflClass.name));
-            }
-
-            getMetadataArgsStorage().entityRepositories.push({
-                target: reflClass.getConstructor(),
-                entity: entityClass.getConstructor(),
-            });
-        }
     }
 }
 
