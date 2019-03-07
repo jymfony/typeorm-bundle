@@ -2,6 +2,7 @@ const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;
 const EntityMetadataValidator = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataValidator;
 const UnderscoreNamingStrategy = Jymfony.Bundle.TypeORMBundle.NamingStrategy.UnderscoreNamingStrategy;
+const RelationLoader = Jymfony.Bundle.TypeORMBundle.QueryBuilder.RelationLoader;
 
 const typeorm = require('typeorm');
 const Base = typeorm.Connection;
@@ -16,6 +17,8 @@ class Connection extends Base {
 
         this._metadataBuilt = false;
         this.namingStrategy = new UnderscoreNamingStrategy();
+        this.relationLoader = new RelationLoader(this);
+
         this.buildMetadatas();
     }
 

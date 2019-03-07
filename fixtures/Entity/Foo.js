@@ -1,4 +1,5 @@
 const Embedded = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Embedded;
+const LazyRelated = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.LazyRelated;
 const Related = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Related;
 const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
 
@@ -23,6 +24,11 @@ class Foo {
                     target: Related,
                     type: 'one-to-one',
                     eager: true,
+                },
+                _lazyRelated: {
+                    target: LazyRelated,
+                    type: 'many-to-one',
+                    lazy: true,
                 },
             },
             repository: FooRepository,

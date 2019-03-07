@@ -81,7 +81,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     primaryKeyName(tableOrName, columnNames) {
-        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...columnNames ];
+        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...(columnNames.map(n => '_' === n[0] ? n.substr(1) : n)) ];
 
         return this._generateIdentifierName(columnNames, 'pk');
     }
@@ -95,7 +95,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     uniqueConstraintName(tableOrName, columnNames) {
-        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...columnNames ];
+        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...(columnNames.map(n => '_' === n[0] ? n.substr(1) : n)) ];
 
         return this._generateIdentifierName(columnNames, 'uniq');
     }
@@ -111,7 +111,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     relationConstraintName(tableOrName, columnNames, where = undefined) {
-        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...columnNames ];
+        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...(columnNames.map(n => '_' === n[0] ? n.substr(1) : n)) ];
         if (where) {
             columnNames.push(where);
         }
@@ -128,7 +128,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     defaultConstraintName(tableOrName, columnName) {
-        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, columnName ];
+        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, columnName[0] === '_' ? columnName.substr(1) : columnName ];
 
         return this._generateIdentifierName(columnNames, 'def');
     }
@@ -142,7 +142,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     foreignKeyName(tableOrName, columnNames) {
-        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...columnNames ];
+        columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...(columnNames.map(n => '_' === n[0] ? n.substr(1) : n)) ];
 
         return this._generateIdentifierName(columnNames, 'fk');
     }
@@ -157,7 +157,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     indexName(tableOrName, columns, where = undefined) {
-        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...columns ];
+        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, ...(columns.map(n => '_' === n[0] ? n.substr(1) : n)) ];
         if (where) {
             columnNames.push(where);
         }
@@ -245,7 +245,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     joinTableColumnName(tableName, propertyName, columnName = undefined) {
-        return this._underscore(tableName) + '_' + this._underscore(columnName || '_' === propertyName[0] ? propertyName.substr(1) : propertyName);
+        return this._underscore(tableName) + '_' + this._underscore(columnName || propertyName);
     }
 
     /**
@@ -286,6 +286,7 @@ class UnderscoreNamingStrategy {
      * @private
      */
     _underscore(string) {
+        string = string[0] === '_' ? string.substr(1) : string;
         string = string.replace(/(?<=[a-z])([A-Z])/g, (m, p1) => {
             return '_' + p1;
         });
@@ -312,7 +313,7 @@ class UnderscoreNamingStrategy {
      * @returns {string}
      */
     _generateIdentifierName(columnNames, prefix = '', maxSize = 30) {
-        const hash = columnNames.map(v => __jymfony.crc32(v).toString(16)).join();
+        const hash = columnNames.map(v => __jymfony.crc32(v).toString(16)).join('');
 
         return (prefix + '_' + hash).substr(0, maxSize).toUpperCase();
     }

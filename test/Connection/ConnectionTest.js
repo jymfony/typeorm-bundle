@@ -1,7 +1,5 @@
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
-const Embedded = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Embedded;
-const Foo = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Foo;
-const Related = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Related;
+const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
 const expect = require('chai').expect;
 const { EntitySchema } = require('typeorm');
 
@@ -14,12 +12,14 @@ describe('Connection', function () {
     });
 
     it('findMetadata should return metadata from autoloaded classes', () => {
-        const fooSchema = Foo[Symbol.for('entitySchema')]();
-        const relatedSchema = Related[Symbol.for('entitySchema')]();
-        const embeddedSchema = Embedded[Symbol.for('entitySchema')]();
-        fooSchema.target = (new ReflectionClass(Foo)).getConstructor();
-        relatedSchema.target = (new ReflectionClass(Related)).getConstructor();
-        embeddedSchema.target = (new ReflectionClass(Embedded)).getConstructor();
+        const fooSchema = Entity.Foo[Symbol.for('entitySchema')]();
+        const relatedSchema = Entity.Related[Symbol.for('entitySchema')]();
+        const embeddedSchema = Entity.Embedded[Symbol.for('entitySchema')]();
+        const lazyRelatedSchema = Entity.LazyRelated[Symbol.for('entitySchema')]();
+        fooSchema.target = (new ReflectionClass(Entity.Foo)).getConstructor();
+        relatedSchema.target = (new ReflectionClass(Entity.Related)).getConstructor();
+        embeddedSchema.target = (new ReflectionClass(Entity.Embedded)).getConstructor();
+        lazyRelatedSchema.target = (new ReflectionClass(Entity.LazyRelated)).getConstructor();
 
         const connection = new Connection({
             type: 'sqlite',
@@ -28,10 +28,11 @@ describe('Connection', function () {
                 new EntitySchema(fooSchema),
                 new EntitySchema(relatedSchema),
                 new EntitySchema(embeddedSchema),
+                new EntitySchema(lazyRelatedSchema),
             ],
         });
 
-        const metadata = connection.findMetadata(Foo);
+        const metadata = connection.findMetadata(Entity.Foo);
         expect(metadata).to.be.not.undefined;
         expect(metadata.target).to.be.equal(fooSchema.target);
     });

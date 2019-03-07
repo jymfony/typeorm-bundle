@@ -52,6 +52,11 @@ Jymfony = {
             /**
              * @namespace
              */
+            QueryBuilder: {},
+
+            /**
+             * @namespace
+             */
             Repository: {},
 
             /**

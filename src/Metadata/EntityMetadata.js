@@ -5,20 +5,26 @@ const Base = require('typeorm').EntityMetadata;
  */
 class EntityMetadata extends Base {
     create(queryRunner = undefined) {
-        // If target is set to a function (e.g. class) that can be created then create it
         let ret;
-        if (this.target instanceof Function) {
-            ret = new ReflectionClass(this.target).newInstanceWithoutConstructor();
-            this.lazyRelations.forEach(relation => this.connection.relationLoader.enableLazyLoad(relation, ret, queryRunner));
-
-            return ret;
+        if (isFunction(this.target)) {
+            // If target is set to a function (e.g. class) that can be created then create it
+            ret = ReflectionClass.exists(this.target)
+                ? new ReflectionClass(this.target).newInstanceWithoutConstructor()
+                : new this.target();
+        } else {
+            // Otherwise simply return a new empty object
+            ret = {}
         }
 
-        // Otherwise simply return a new empty object
-        const newObject = {};
-        this.lazyRelations.forEach(relation => this.connection.relationLoader.enableLazyLoad(relation, newObject, queryRunner));
+        this.lazyRelations.forEach(relation => {
+            if (relation.embeddedMetadata) {
+                return;
+            }
 
-        return newObject;
+            this.connection.relationLoader.enableLazyLoad(relation, ret, queryRunner);
+        });
+
+        return ret;
     }
 }
 
