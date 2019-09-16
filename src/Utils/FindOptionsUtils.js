@@ -1,9 +1,9 @@
-const Base = require('typeorm/find-options/FindOptionsUtils').FindOptionsUtils;
+import { FindOptionsUtils as Base } from 'typeorm/find-options/FindOptionsUtils';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Utils
  */
-class FindOptionsUtils {
+export default class FindOptionsUtils {
     /**
      * Patches the find options utils to allow circular eager relations.
      */
@@ -37,5 +37,3 @@ class FindOptionsUtils {
         });
     };
 }
-
-module.exports = FindOptionsUtils;

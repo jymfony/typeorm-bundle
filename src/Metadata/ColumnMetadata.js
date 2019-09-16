@@ -1,4 +1,4 @@
-const Base = require('typeorm/metadata/ColumnMetadata').ColumnMetadata;
+import { ColumnMetadata as Base } from 'typeorm/metadata/ColumnMetadata';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata

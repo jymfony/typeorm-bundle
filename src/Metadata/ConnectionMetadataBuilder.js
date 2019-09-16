@@ -1,20 +1,28 @@
+import { getMetadataArgsStorage, EntitySchema } from 'typeorm';
+import { importClassesFromDirectories } from 'typeorm/util/DirectoryExportedClassesLoader';
+import { ConnectionMetadataBuilder as Base } from 'typeorm/connection/ConnectionMetadataBuilder';
+import { OrmUtils } from 'typeorm/util/OrmUtils';
+
 const EntityMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataBuilder;
 const EntitySchemaTransformer = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchemaTransformer;
-const Base = require('typeorm/connection/ConnectionMetadataBuilder').ConnectionMetadataBuilder;
-const { EntitySchema, getMetadataArgsStorage } = require('typeorm');
-const { importClassesFromDirectories } = require('typeorm/util/DirectoryExportedClassesLoader');
-const { OrmUtils } = require('typeorm/util/OrmUtils');
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class ConnectionMetadataBuilder extends Base {
+export default class ConnectionMetadataBuilder extends Base {
+    /**
+     * Builds entity metadatas for the given classes or directories.
+     *
+     * @param {(Function | EntitySchema<any> | string)[]} entities
+     *
+     * @returns {EntityMetadata[]}
+     */
     buildEntityMetadatas(entities) {
         const [ entityClassesOrSchemas, entityDirectories ] = OrmUtils.splitClassesAndStrings(entities || []);
-        const entityClasses = entityClassesOrSchemas.filter(entityClass => false === (entityClass instanceof EntitySchema));
+        const entityClasses = entityClassesOrSchemas.filter(entityClass => ! (entityClass instanceof EntitySchema));
         const entitySchemas = entityClassesOrSchemas.filter(entityClass => entityClass instanceof EntitySchema);
 
-        const allEntityClasses = [ ...entityClasses, ...importClassesFromDirectories(entityDirectories) ];
+        const allEntityClasses = [ ...entityClasses, ...importClassesFromDirectories(this.connection.logger, entityDirectories) ];
         allEntityClasses.forEach(entityClass => { // If we have entity schemas loaded from directories
             if (entityClass instanceof EntitySchema) {
                 entitySchemas.push(entityClass);
@@ -29,5 +37,3 @@ class ConnectionMetadataBuilder extends Base {
         return [ ...decoratorEntityMetadatas, ...schemaEntityMetadatas ];
     }
 }
-
-module.exports = ConnectionMetadataBuilder;

@@ -1,3 +1,5 @@
+import { ConnectionManager } from 'typeorm';
+
 const FileLocator = Jymfony.Component.Config.FileLocator;
 const GlobResource = Jymfony.Component.Config.Resource.GlobResource;
 const InvalidConfigurationException = Jymfony.Component.Config.Definition.Exception.InvalidConfigurationException;
@@ -5,12 +7,10 @@ const Alias = Jymfony.Component.DependencyInjection.Alias;
 const Extension = Jymfony.Component.DependencyInjection.Extension.Extension;
 const JsFileLoader = Jymfony.Component.DependencyInjection.Loader.JsFileLoader;
 
-const { ConnectionManager } = require('typeorm');
-
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.DependencyInjection
  */
-class TypeORMExtension extends Extension {
+export default class TypeORMExtension extends Extension {
     /**
      * @inheritdoc
      */
@@ -141,5 +141,3 @@ class TypeORMExtension extends Extension {
         return ns.__namespace;
     }
 }
-
-module.exports = TypeORMExtension;

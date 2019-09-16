@@ -1,11 +1,11 @@
-const Base = require('typeorm/entity-schema/EntitySchemaTransformer').EntitySchemaTransformer;
-const { MetadataArgsStorage } = require('typeorm/metadata-args/MetadataArgsStorage');
-const { AbstractRepository, Repository } = require('typeorm');
+import { AbstractRepository, Repository } from 'typeorm';
+import { EntitySchemaTransformer as Base } from 'typeorm/entity-schema/EntitySchemaTransformer';
+import { MetadataArgsStorage } from 'typeorm/metadata-args/MetadataArgsStorage';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class EntitySchemaTransformer extends Base {
+export default class EntitySchemaTransformer extends Base {
     /**
      * Transforms entity schema into new metadata args storage object.
      */
@@ -289,5 +289,3 @@ class EntitySchemaTransformer extends Base {
         });
     }
 }
-
-module.exports = EntitySchemaTransformer;

@@ -1,7 +1,7 @@
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Logger
  */
-class Logger {
+export default class Logger {
     /**
      * Constructor.
      *
@@ -115,5 +115,3 @@ class Logger {
         this._logger[method](message);
     }
 }
-
-module.exports = Logger;

@@ -1,9 +1,9 @@
-const Base = require('typeorm/query-builder/RelationLoader').RelationLoader;
+import { RelationLoader as Base } from 'typeorm/query-builder/RelationLoader';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.QueryBuilder
  */
-class RelationLoader extends Base {
+export default class RelationLoader extends Base {
     /**
      * Wraps given entity and creates getters/setters for its given relation
      * to be able to lazily load data when accessing this relation.
@@ -77,5 +77,3 @@ class RelationLoader extends Base {
         });
     }
 }
-
-module.exports = RelationLoader;

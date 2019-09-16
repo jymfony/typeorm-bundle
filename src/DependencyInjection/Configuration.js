@@ -6,7 +6,7 @@ const ConfigurationInterface = Jymfony.Component.Config.Definition.Configuration
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.DependencyInjection
  */
-class Configuration extends implementationOf(ConfigurationInterface) {
+export default class Configuration extends implementationOf(ConfigurationInterface) {
     /**
      * @inheritdoc
      */
@@ -97,5 +97,3 @@ class Configuration extends implementationOf(ConfigurationInterface) {
         ;
     }
 }
-
-module.exports = Configuration;

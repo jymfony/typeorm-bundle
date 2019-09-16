@@ -1,7 +1,7 @@
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Utils
  */
-class MetadataUtils {
+export default class MetadataUtils {
     /**
      * Gets given's entity all inherited classes.
      * Gives in order from parents to children.
@@ -28,5 +28,3 @@ class MetadataUtils {
         return reflClass1.isSubclassOf(target2);
     }
 }
-
-module.exports = MetadataUtils;

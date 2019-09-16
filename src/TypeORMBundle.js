@@ -1,15 +1,15 @@
+import { useContainer } from 'typeorm';
 const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager;
 const TypeORMExtension = Jymfony.Bundle.TypeORMBundle.DependencyInjection.TypeORMExtension;
 const FindOptionsUtils = Jymfony.Bundle.TypeORMBundle.Utils.FindOptionsUtils;
 const Bundle = Jymfony.Component.Kernel.Bundle;
-const { useContainer } = require('typeorm');
 
 /**
  * Bundle.
  *
  * @memberOf Jymfony.Bundle.TypeORMBundle
  */
-class TypeORMBundle extends Bundle {
+export default class TypeORMBundle extends Bundle {
     /**
      * @inheritdoc
      */
@@ -37,5 +37,3 @@ class TypeORMBundle extends Bundle {
         return new TypeORMExtension();
     }
 }
-
-module.exports = TypeORMBundle;

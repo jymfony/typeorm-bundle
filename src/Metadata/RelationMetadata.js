@@ -1,9 +1,9 @@
-const Base = require('typeorm/metadata/RelationMetadata').RelationMetadata;
+import { RelationMetadata as Base } from 'typeorm/metadata/RelationMetadata';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class RelationMetadata extends Base {
+export default class RelationMetadata extends Base {
     constructor(options) {
         let type = options.args.type;
         if (isFunction(type)) {
@@ -53,5 +53,3 @@ class RelationMetadata extends Base {
         return '';
     }
 }
-
-module.exports = RelationMetadata;

@@ -1,7 +1,7 @@
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle
  */
-class ManagerRegistry {
+export default class ManagerRegistry {
     /**
      * Constructor.
      *

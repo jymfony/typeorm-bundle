@@ -1,17 +1,19 @@
+import { Connection as Base } from 'typeorm';
+
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;
 const EntityMetadataValidator = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataValidator;
+const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 const UnderscoreNamingStrategy = Jymfony.Bundle.TypeORMBundle.NamingStrategy.UnderscoreNamingStrategy;
 const RelationLoader = Jymfony.Bundle.TypeORMBundle.QueryBuilder.RelationLoader;
-
-const typeorm = require('typeorm');
-const Base = typeorm.Connection;
-const { EntitySchema } = typeorm;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
  */
-class Connection extends Base {
+export default class Connection extends Base {
+    /**
+     * Constructor.
+     */
     constructor(options) {
         super(options);
 
@@ -87,5 +89,3 @@ class Connection extends Base {
         entityMetadataValidator.validateMany(this.entityMetadatas, this.driver);
     }
 }
-
-module.exports = Connection;

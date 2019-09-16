@@ -1,25 +1,25 @@
+import { CheckMetadata } from 'typeorm/metadata/CheckMetadata';
+import { EntityMetadataBuilder as Base } from 'typeorm/metadata-builder/EntityMetadataBuilder';
+import { EntityListenerMetadata } from 'typeorm/metadata/EntityListenerMetadata';
+import { ExclusionMetadata } from 'typeorm/metadata/ExclusionMetadata';
+import { IndexMetadata } from 'typeorm/metadata/IndexMetadata';
+import { MysqlDriver } from 'typeorm/driver/mysql/MysqlDriver';
+import { PostgresDriver } from 'typeorm/driver/postgres/PostgresDriver';
+import { RelationCountMetadata } from 'typeorm/metadata/RelationCountMetadata';
+import { RelationIdMetadata } from 'typeorm/metadata/RelationIdMetadata';
+import { SqlServerDriver } from 'typeorm/driver/sqlserver/SqlServerDriver';
+import { UniqueMetadata } from 'typeorm/metadata/UniqueMetadata';
+
 const ColumnMetadata = Jymfony.Bundle.TypeORMBundle.Metadata.ColumnMetadata;
 const EmbeddedMetadata = Jymfony.Bundle.TypeORMBundle.Metadata.EmbeddedMetadata;
 const EntityMetadata = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadata;
 const RelationMetadata = Jymfony.Bundle.TypeORMBundle.Metadata.RelationMetadata;
 const MetadataUtils = Jymfony.Bundle.TypeORMBundle.Utils.MetadataUtils;
-const Base = require('typeorm/metadata-builder/EntityMetadataBuilder').EntityMetadataBuilder;
-
-const { MysqlDriver } = require('typeorm/driver/mysql/MysqlDriver');
-const { PostgresDriver } = require('typeorm/driver/postgres/PostgresDriver');
-const { SqlServerDriver } = require('typeorm/driver/sqlserver/SqlServerDriver');
-const { CheckMetadata } = require('typeorm/metadata/CheckMetadata');
-const { EntityListenerMetadata } = require('typeorm/metadata/EntityListenerMetadata');
-const { ExclusionMetadata } = require('typeorm/metadata/ExclusionMetadata');
-const { IndexMetadata } = require('typeorm/metadata/IndexMetadata');
-const { RelationCountMetadata } = require('typeorm/metadata/RelationCountMetadata');
-const { RelationIdMetadata } = require('typeorm/metadata/RelationIdMetadata');
-const { UniqueMetadata } = require('typeorm/metadata/UniqueMetadata');
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class EntityMetadataBuilder extends Base {
+export default class EntityMetadataBuilder extends Base {
     constructor(connection, metadataArgsStorage) {
         super(connection, metadataArgsStorage);
 
@@ -519,5 +519,3 @@ class EntityMetadataBuilder extends Base {
         });
     }
 }
-
-module.exports = EntityMetadataBuilder;

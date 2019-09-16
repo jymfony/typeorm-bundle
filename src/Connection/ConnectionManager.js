@@ -1,13 +1,14 @@
+import { ConnectionManager as Base } from 'typeorm';
+import { AlreadyHasActiveConnectionError } from 'typeorm/error/AlreadyHasActiveConnectionError';
+import { parse } from 'url';
+
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
-const url = require('url');
-const typeorm = require('typeorm');
-const Base = typeorm.ConnectionManager;
-const { EntitySchema, AlreadyHasActiveConnectionError } = typeorm;
+const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
  */
-class ConnectionManager extends Base {
+export default class ConnectionManager extends Base {
     /**
      * Constructor.
      *
@@ -65,7 +66,7 @@ class ConnectionManager extends Base {
         if (! super.has(name) && undefined !== this._connections[name]) {
             const connection = this._connections[name];
             if (connection.url) {
-                const parsed = url.parse(connection.url);
+                const parsed = parse(connection.url);
                 connection.driver = __jymfony.rtrim(String(parsed.protocol), ':');
 
                 const auth = parsed.auth ? parsed.auth.match(/^([^:]+)(?::((?:\\@|[^@])+))?$/) : null;
@@ -161,5 +162,3 @@ class ConnectionManager extends Base {
         }
     }
 }
-
-module.exports = ConnectionManager;

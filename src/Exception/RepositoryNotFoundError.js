@@ -1,9 +1,9 @@
-const { EntitySchema } = require('typeorm');
+const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Exception
  */
-class RepositoryNotFoundError extends RuntimeException {
+export default class RepositoryNotFoundError extends RuntimeException {
     __construct(connectionName, entityClass) {
         this.name = 'RepositoryNotFoundError';
 
@@ -23,5 +23,3 @@ class RepositoryNotFoundError extends RuntimeException {
         ));
     }
 }
-
-module.exports = RepositoryNotFoundError;

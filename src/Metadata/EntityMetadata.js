@@ -1,9 +1,9 @@
-const Base = require('typeorm').EntityMetadata;
+import { EntityMetadata as Base } from 'typeorm';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class EntityMetadata extends Base {
+export default class EntityMetadata extends Base {
     create(queryRunner = undefined) {
         let ret;
         if (isFunction(this.target)) {
@@ -27,5 +27,3 @@ class EntityMetadata extends Base {
         return ret;
     }
 }
-
-module.exports = EntityMetadata;

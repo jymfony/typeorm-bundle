@@ -1,10 +1,10 @@
-const { Table } = require('typeorm/schema-builder/table/Table');
+import { Table } from 'typeorm/schema-builder/table/Table';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.NamingStrategy
  * @implements NamingStrategyInterface
  */
-class UnderscoreNamingStrategy {
+export default class UnderscoreNamingStrategy {
     /**
      * Constructor.
      *
@@ -277,6 +277,16 @@ class UnderscoreNamingStrategy {
     }
 
     /**
+     * Gets the name of the alias used for relation joins.
+     *
+     * @returns {string}
+     */
+    eagerJoinRelationAlias(alias, propertyPath) {
+        return alias + "_" + propertyPath.replace(".", "_");
+    }
+
+
+    /**
      * Underscores a string.
      *
      * @param {string} string
@@ -297,7 +307,6 @@ class UnderscoreNamingStrategy {
 
         return string.toLowerCase();
     }
-
 
     /**
      * Generates an identifier from a list of column names obeying a certain string length.
@@ -321,5 +330,3 @@ class UnderscoreNamingStrategy {
 
 UnderscoreNamingStrategy.CASE_LOWER = 0;
 UnderscoreNamingStrategy.CASE_UPPER = 1;
-
-module.exports = UnderscoreNamingStrategy;

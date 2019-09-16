@@ -5,7 +5,7 @@ const JymfonyStyle = Jymfony.Component.Console.Style.JymfonyStyle;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Console
  */
-class SchemaSyncCommand extends Command {
+export default class SchemaSyncCommand extends Command {
     /**
      * Constructor.
      *
@@ -25,8 +25,14 @@ class SchemaSyncCommand extends Command {
     /**
      * @inheritdoc
      */
+    static get defaultName() {
+        return 'typeorm:schema:sync';
+    }
+
+    /**
+     * @inheritdoc
+     */
     configure() {
-        this.name = 'typeorm:schema:sync';
         this.description = 'Syncs schema to database';
         this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection used to sync the schema');
         this.addOption('dry-run', 'd', InputOption.VALUE_NONE, 'Do not execute the queries, just print them out');
@@ -66,5 +72,3 @@ You can also optionally specify the name of a connection to sync the schema for:
         }
     }
 }
-
-module.exports = SchemaSyncCommand;

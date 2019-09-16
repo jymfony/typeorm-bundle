@@ -1,9 +1,14 @@
-const Base = require('typeorm/metadata/EmbeddedMetadata').EmbeddedMetadata;
+import { EmbeddedMetadata as Base } from 'typeorm/metadata/EmbeddedMetadata';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class EmbeddedMetadata extends Base {
+export default class EmbeddedMetadata extends Base {
+    /**
+     * Constructor.
+     *
+     * @param options
+     */
     constructor(options) {
         super(options);
 
@@ -44,5 +49,3 @@ class EmbeddedMetadata extends Base {
         return instance;
     }
 }
-
-module.exports = EmbeddedMetadata;

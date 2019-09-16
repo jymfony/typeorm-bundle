@@ -7,9 +7,10 @@ const Prophet = Jymfony.Component.Testing.Prophet;
 const Foo = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Foo;
 const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
 
-const expect = require('chai').expect;
+const { expect } = require('chai');
 
 describe('EntityManager', function () {
+    this.timeout(60000);
     beforeEach(() => {
         this._prophet = new Prophet();
         this._connection = this._prophet.prophesize(Connection);

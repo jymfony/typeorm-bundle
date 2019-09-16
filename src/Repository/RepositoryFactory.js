@@ -1,12 +1,12 @@
-const { MongoDriver } = require('typeorm/driver/mongodb/MongoDriver');
-const { getMetadataArgsStorage, AbstractRepository, Repository, MongoRepository, TreeRepository } = require('typeorm');
+import { getMetadataArgsStorage, AbstractRepository, Repository, MongoRepository, TreeRepository } from 'typeorm';
+import { MongoDriver } from 'typeorm/driver/mongodb/MongoDriver';
 
 /**
  * Factory used to create different types of repositories.
  *
  * @memberOf Jymfony.Bundle.TypeORMBundle.Repository
  */
-class RepositoryFactory {
+export default class RepositoryFactory {
     __construct(metadataArgsStorage = getMetadataArgsStorage()) {
         /**
          * @type {MetadataArgsStorage}
@@ -59,5 +59,3 @@ class RepositoryFactory {
         return repository;
     }
 }
-
-module.exports = RepositoryFactory;

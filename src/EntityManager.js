@@ -1,12 +1,11 @@
+import { EntityManager as Base } from 'typeorm';
 const RepositoryNotFoundError = Jymfony.Bundle.TypeORMBundle.Exception.RepositoryNotFoundError;
 const RepositoryFactory = Jymfony.Bundle.TypeORMBundle.Repository.RepositoryFactory;
-const typeorm = require('typeorm');
-const Base = typeorm.EntityManager;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle
  */
-class EntityManager extends Base {
+export default class EntityManager extends Base {
     constructor(connection, queryRunner = undefined) {
         super(connection, queryRunner);
 
@@ -54,5 +53,3 @@ class EntityManager extends Base {
         return this._repositoryFactory;
     }
 }
-
-module.exports = EntityManager;
