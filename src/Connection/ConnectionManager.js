@@ -68,7 +68,7 @@ class ConnectionManager extends Base {
                 const parsed = url.parse(connection.url);
                 connection.driver = __jymfony.rtrim(String(parsed.protocol), ':');
 
-                const auth = parsed.auth ? parsed.auth.match(/^([^:]+):((?:\\@|[^@])+)$/) : null;
+                const auth = parsed.auth ? parsed.auth.match(/^([^:]+)(?::((?:\\@|[^@])+))?$/) : null;
                 if (null !== auth) {
                     [ , connection.user, connection.password ] = auth;
                 }
