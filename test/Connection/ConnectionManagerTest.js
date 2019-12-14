@@ -26,7 +26,7 @@ describe('ConnectionManager', function () {
         expect(metadata.target).to.be.equal(new ReflectionClass(Entity.Foo).getConstructor());
     });
 
-    it('should load decorators metadata', () => {
+    it('should load decorators metadata', __jymfony.Platform.hasPublicFieldSupport() ? () => {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -45,5 +45,5 @@ describe('ConnectionManager', function () {
         const metadata = connection.findMetadata(Entity.FooDecorated);
         expect(metadata).to.be.not.equal(undefined);
         expect(metadata.target).to.be.equal(new ReflectionClass(Entity.FooDecorated).getConstructor());
-    });
+    } : undefined);
 });
