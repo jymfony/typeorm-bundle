@@ -6,7 +6,7 @@ import { ColumnMetadata as Base } from 'typeorm/metadata/ColumnMetadata';
 class ColumnMetadata extends Base {
     setEntityValue(entity, value) {
         if (this.embeddedMetadata) {
-            // first step - we extract all parent properties of the entity relative to this column, e.g. [data, information, counters]
+            // First step - we extract all parent properties of the entity relative to this column, e.g. [data, information, counters]
             const extractEmbeddedColumnValue = (embeddedMetadatas, map) => {
                 const embeddedMetadata = embeddedMetadatas.shift();
                 if (embeddedMetadata) {
@@ -23,10 +23,10 @@ class ColumnMetadata extends Base {
                 return map;
             };
 
-            return extractEmbeddedColumnValue([...this.embeddedMetadata.embeddedMetadataTree], entity);
-        } else {
-            entity[this.propertyName] = value;
+            return extractEmbeddedColumnValue([ ...this.embeddedMetadata.embeddedMetadataTree ], entity);
         }
+        entity[this.propertyName] = value;
+
     }
 }
 

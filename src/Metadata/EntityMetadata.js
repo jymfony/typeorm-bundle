@@ -13,7 +13,7 @@ export default class EntityMetadata extends Base {
                 : new this.target();
         } else {
             // Otherwise simply return a new empty object
-            ret = {}
+            ret = {};
         }
 
         this.lazyRelations.forEach(relation => {

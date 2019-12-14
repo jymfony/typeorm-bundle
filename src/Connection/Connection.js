@@ -18,7 +18,7 @@ export default class Connection extends Base {
         super(options);
 
         this._metadataBuilt = false;
-        this.namingStrategy = new UnderscoreNamingStrategy();
+        this.namingStrategy = options.namingStrategy || new UnderscoreNamingStrategy();
         this.relationLoader = new RelationLoader(this);
 
         this.buildMetadatas();

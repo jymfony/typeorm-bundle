@@ -1,7 +1,7 @@
-import { getMetadataArgsStorage, EntitySchema } from 'typeorm';
-import { importClassesFromDirectories } from 'typeorm/util/DirectoryExportedClassesLoader';
+import { EntitySchema, getMetadataArgsStorage } from 'typeorm';
 import { ConnectionMetadataBuilder as Base } from 'typeorm/connection/ConnectionMetadataBuilder';
 import { OrmUtils } from 'typeorm/util/OrmUtils';
+import { importClassesFromDirectories } from 'typeorm/util/DirectoryExportedClassesLoader';
 
 const EntityMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.EntityMetadataBuilder;
 const EntitySchemaTransformer = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchemaTransformer;

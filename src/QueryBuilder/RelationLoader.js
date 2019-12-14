@@ -36,17 +36,17 @@ export default class RelationLoader extends Base {
 
         Object.defineProperty(instance, relation.propertyName, {
             get: function() {
-                if (this[resolveIndex] === true || this[dataIndex]) {
-                    // if related data already was loaded then simply return it
+                if (true === this[resolveIndex] || this[dataIndex]) {
+                    // If related data already was loaded then simply return it
                     return Promise.resolve(this[dataIndex]);
                 }
 
                 if (this[promiseIndex]) {
-                    // if related data is loading then return a promise relationLoader loads it
+                    // If related data is loading then return a promise relationLoader loads it
                     return this[promiseIndex];
                 }
 
-                // nothing is loaded yet, load relation data and save it in the model once they are loaded
+                // Nothing is loaded yet, load relation data and save it in the model once they are loaded
                 this[promiseIndex] = relationLoader.load(relation, entity, queryRunner).then(result => {
                     if (relation.isOneToOne || relation.isManyToOne) {
                         result = result[0];
@@ -62,13 +62,13 @@ export default class RelationLoader extends Base {
             },
             set: function(value) {
                 if (isPromise(value)) {
-                    // if set data is a promise then wait for its resolve and save in the object
+                    // If set data is a promise then wait for its resolve and save in the object
                     value.then(result => {
                         this[dataIndex] = result;
                         this[resolveIndex] = true;
                     });
                 } else {
-                    // if its direct data set (non promise, probably not safe-typed)
+                    // If its direct data set (non promise, probably not safe-typed)
                     this[dataIndex] = value;
                     this[resolveIndex] = true;
                 }

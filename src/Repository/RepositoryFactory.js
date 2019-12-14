@@ -1,4 +1,4 @@
-import { getMetadataArgsStorage, AbstractRepository, Repository, MongoRepository, TreeRepository } from 'typeorm';
+import { AbstractRepository, MongoRepository, Repository, TreeRepository, getMetadataArgsStorage } from 'typeorm';
 import { MongoDriver } from 'typeorm/driver/mongodb/MongoDriver';
 
 /**

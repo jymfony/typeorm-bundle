@@ -128,7 +128,7 @@ export default class UnderscoreNamingStrategy {
      * @returns {string}
      */
     defaultConstraintName(tableOrName, columnName) {
-        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, columnName[0] === '_' ? columnName.substr(1) : columnName ];
+        const columnNames = [ tableOrName instanceof Table ? tableOrName.name : tableOrName, '_' === columnName[0] ? columnName.substr(1) : columnName ];
 
         return this._generateIdentifierName(columnNames, 'def');
     }
@@ -282,7 +282,7 @@ export default class UnderscoreNamingStrategy {
      * @returns {string}
      */
     eagerJoinRelationAlias(alias, propertyPath) {
-        return alias + "_" + propertyPath.replace(".", "_");
+        return alias + '_' + propertyPath.replace('.', '_');
     }
 
 
@@ -296,7 +296,7 @@ export default class UnderscoreNamingStrategy {
      * @private
      */
     _underscore(string) {
-        string = string[0] === '_' ? string.substr(1) : string;
+        string = '_' === string[0] ? string.substr(1) : string;
         string = string.replace(/(?:(?<=[a-z0-9])([A-Z])|(?<=[A-Z]{2})([a-z]))/g, (m, p1, p2) => {
             return '_' + (p1 || p2);
         });
