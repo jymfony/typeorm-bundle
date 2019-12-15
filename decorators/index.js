@@ -7,6 +7,7 @@ export * from './GeneratedValue';
 export * from './Id';
 export * from './JoinColumn';
 export * from './JoinTable';
+export * from './MappedSuperclass';
 export * from './Relation';
 export * from './Table';
 export * from './TableIndex';

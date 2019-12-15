@@ -9,6 +9,7 @@ import {
     Index,
     JoinColumn,
     JoinTable,
+    MappedSuperclass,
     Relation,
     Table,
     UpdateDate,
@@ -207,9 +208,22 @@ export default class ConnectionManager extends Base {
                 expression: check.expression,
             }));
 
+        let parent;
+        let columns = this._loadColumns(reflClass, namingStrategy);
+        let relations = this._loadRelations(reflClass);
+        while ((parent = reflClass.getParentClass())) {
+            const [ , mappedSuperclass ] = parent.metadata.find(([ t ]) => t === MappedSuperclass) || [];
+            if (mappedSuperclass) {
+                columns = { ...this._loadColumns(parent, namingStrategy) };
+                relations = { ...this._loadRelations(parent) };
+            } else {
+                break;
+            }
+        }
+
         yield new EntitySchema({
-            columns: this._loadColumns(reflClass, namingStrategy),
-            relations: this._loadRelations(reflClass),
+            columns,
+            relations,
             target: constructor,
             extends: decorator.extends,
             name: decorator.name || reflClass.shortName,
