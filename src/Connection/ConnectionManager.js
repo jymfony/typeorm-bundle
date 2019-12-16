@@ -208,10 +208,10 @@ export default class ConnectionManager extends Base {
                 expression: check.expression,
             }));
 
-        let parent;
+        let parent = reflClass;
         let columns = this._loadColumns(reflClass, namingStrategy);
         let relations = this._loadRelations(reflClass);
-        while ((parent = reflClass.getParentClass())) {
+        while ((parent = parent.getParentClass())) {
             const [ , mappedSuperclass ] = parent.metadata.find(([ t ]) => t === MappedSuperclass) || [];
             if (mappedSuperclass) {
                 columns = { ...this._loadColumns(parent, namingStrategy) };
