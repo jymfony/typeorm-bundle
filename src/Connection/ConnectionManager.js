@@ -213,12 +213,12 @@ export default class ConnectionManager extends Base {
         let relations = this._loadRelations(reflClass);
         while ((parent = parent.getParentClass())) {
             const [ , mappedSuperclass ] = parent.metadata.find(([ t ]) => t === MappedSuperclass) || [];
-            if (mappedSuperclass) {
-                columns = { ...this._loadColumns(parent, namingStrategy) };
-                relations = { ...this._loadRelations(parent) };
-            } else {
+            if (! mappedSuperclass) {
                 break;
             }
+
+            columns = { ...this._loadColumns(parent, namingStrategy), ...columns };
+            relations = { ...this._loadRelations(parent), ...relations };
         }
 
         yield new EntitySchema({
@@ -326,7 +326,7 @@ export default class ConnectionManager extends Base {
         return relations;
     }
 
-    * _loadFromEntitySchema(reflClass) {
+    * _loadFromEntitySchema(reflClass, namingStrategy) {
         const constructor = reflClass.getConstructor();
         const schema = constructor[Symbol.for('entitySchema')]();
         schema.target = constructor;
@@ -335,9 +335,8 @@ export default class ConnectionManager extends Base {
         }
 
         for (const [ key, columnDefinition ] of __jymfony.getEntries(schema.columns || {})) {
-            if ('_' === key[0] && undefined === columnDefinition.name) {
-                columnDefinition.name = key.substr(1);
-            }
+            const field = '_' === key[0] ? key.substr(1) : key;
+            columnDefinition.name = namingStrategy.columnName(field, columnDefinition.name, []);
 
             schema.columns[key] = columnDefinition;
         }

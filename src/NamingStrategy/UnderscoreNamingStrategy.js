@@ -54,7 +54,8 @@ export default class UnderscoreNamingStrategy {
     columnName(propertyName, customName, embeddedPrefixes) {
         propertyName = '_' === propertyName[0] ? propertyName.substr(1) : propertyName;
         if (0 < embeddedPrefixes.length) {
-            return this._underscore(embeddedPrefixes.map(p => '_' === p[0] ? p.substr(1) : p).join('_')) + '_' + (customName || this._underscore(propertyName));
+            return this._underscore(embeddedPrefixes.map(p => '_' === p[0] ? p.substr(1) : p).join('_'))
+                + '_' + (customName || this._underscore(propertyName));
         }
 
         return customName || this._underscore(propertyName);

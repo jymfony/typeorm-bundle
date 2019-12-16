@@ -45,5 +45,19 @@ describe('ConnectionManager', function () {
         const metadata = connection.findMetadata(Entity.FooDecorated);
         expect(metadata).to.be.not.equal(undefined);
         expect(metadata.target).to.be.equal(new ReflectionClass(Entity.FooDecorated).getConstructor());
+        expect(metadata.columns.map(m => m.databaseName + ' ' + m.propertyName))
+            .to.be.deep.equal([
+                'id _id',
+                'name _name',
+                'lazy_related_id _lazyRelated',
+                'embeds_external_id _externalId',
+                'embeds_updated_at _updatedAt',
+            ]);
+
+        expect(metadata.relations.map(m => m.propertyName))
+            .to.be.deep.equal([
+                '_related',
+                '_lazyRelated',
+            ]);
     } : undefined);
 });
