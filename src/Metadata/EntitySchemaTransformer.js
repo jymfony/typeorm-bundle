@@ -61,6 +61,25 @@ export default class EntitySchemaTransformer extends Base {
                 };
                 metadataArgsStorage.exclusions.push(exclusionArgs);
             });
+
+            if ('SINGLE_TABLE' === options.inheritanceType) {
+                const column = options.discriminatorColumn;
+
+                for (const [ key, target ] of __jymfony.getEntries(options.discriminatorMap || {})) {
+                    const reflClass = ReflectionClass.exists(target) ? new ReflectionClass(target) : null;
+
+                    metadataArgsStorage.inheritances.push({
+                        column,
+                        pattern: 'STI',
+                        target: reflClass ? reflClass.getConstructor() : target,
+                    });
+
+                    metadataArgsStorage.discriminatorValues.push({
+                        target: reflClass ? reflClass.getConstructor() : target,
+                        value: key,
+                    });
+                }
+            }
         }
 
         return metadataArgsStorage;

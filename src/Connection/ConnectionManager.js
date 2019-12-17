@@ -2,11 +2,14 @@ import {
     Check,
     Column,
     CreationDate,
+    DiscriminatorColumn,
+    DiscriminatorMap,
     Entity,
     Exclude,
     GeneratedValue,
     Id,
     Index,
+    InheritanceType,
     JoinColumn,
     JoinTable,
     MappedSuperclass,
@@ -181,6 +184,9 @@ export default class ConnectionManager extends Base {
     * _loadFromDecorator(reflClass, decorator, namingStrategy) {
         const constructor = reflClass.getConstructor();
         const [ , table ] = reflClass.metadata.find(([ t ]) => t === Table) || [];
+        let [ , inheritanceType ] = reflClass.metadata.find(([ t ]) => t === InheritanceType) || [];
+        const [ , discriminatorColumn ] = reflClass.metadata.find(([ t ]) => t === DiscriminatorColumn) || [];
+        const [ , discriminatorMap ] = reflClass.metadata.find(([ t ]) => t === DiscriminatorMap) || [];
 
         const indices = reflClass.metadata
             .filter(([ t ]) => t === Index)
@@ -221,6 +227,8 @@ export default class ConnectionManager extends Base {
             relations = { ...this._loadRelations(parent), ...relations };
         }
 
+        inheritanceType = inheritanceType ? inheritanceType.type : undefined;
+
         yield new EntitySchema({
             columns,
             relations,
@@ -236,6 +244,12 @@ export default class ConnectionManager extends Base {
             checks,
             exclusions,
             repository: decorator.repository,
+            inheritanceType,
+            discriminatorColumn: discriminatorColumn && 'SINGLE_TABLE' === inheritanceType ? {
+                type: discriminatorColumn.type,
+                name: discriminatorColumn.name,
+            } : undefined,
+            discriminatorMap: discriminatorMap && 'SINGLE_TABLE' === inheritanceType ? discriminatorMap.map : undefined,
         });
     }
 

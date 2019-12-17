@@ -56,11 +56,20 @@ export default class EntityMetadataBuilder extends Base {
 
         // After all metadatas created we set child entity metadatas for table inheritance
         entityMetadatas.forEach(metadata => {
-            metadata.childEntityMetadatas = entityMetadatas.filter(childMetadata => {
-                return metadata.target instanceof Function
-                    && childMetadata.target instanceof Function
-                    && MetadataUtils.isInherited(childMetadata.target, metadata.target);
-            });
+            metadata.childEntityMetadatas = [];
+            if ('STI' !== metadata.inheritancePattern) {
+                return;
+            }
+
+            for (const childMetadata of entityMetadatas) {
+                if (childMetadata === metadata) {
+                    continue;
+                }
+
+                if (-1 !== metadata.inheritanceTree.indexOf(childMetadata.target)) {
+                    metadata.childEntityMetadatas.push(childMetadata);
+                }
+            }
         });
 
         // Build entity metadata (step0), first for non-single-table-inherited entity metadatas (dependant)
