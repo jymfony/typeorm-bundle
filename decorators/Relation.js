@@ -29,13 +29,6 @@ export class Relation {
          * @private
          */
         this._lazy = opts.lazy;
-
-        /**
-         * @type {boolean}
-         *
-         * @private
-         */
-        this._eager = opts.eager;
     }
 
     /**
@@ -72,15 +65,6 @@ export class Relation {
      */
     get lazy() {
         return this._lazy;
-    }
-
-    /**
-     * Indicates if this relation will be eagerly loaded.
-     *
-     * @returns {boolean}
-     */
-    get eager() {
-        return this._eager;
     }
 }
 

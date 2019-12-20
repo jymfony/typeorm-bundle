@@ -318,13 +318,14 @@ export default class ConnectionManager extends Base {
                 referencedColumnName: joinColumn.referencedColumnName,
             });
 
+            const lazy = !! relation.lazy;
             relations[field] = {
                 primary: !! id,
                 target: relation.target,
                 type: relation.type,
                 inverseSide: relation.inverse,
-                lazy: relation.lazy,
-                eager: relation.each,
+                lazy: lazy,
+                eager: ! lazy,
                 joinColumn: joinColumn ? joinColumnOpts(joinColumn) : undefined,
                 nullable: joinColumn ? joinColumn.nullable : undefined,
                 joinTable: joinTable ? {
