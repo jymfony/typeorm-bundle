@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Column {
     __construct(opts) {
@@ -136,5 +136,5 @@ export class Column {
  * @param {int} [opts.scale]
  */
 export decorator @Column(opts = {}) {
-    @metadata(Column, new Column(opts))
+    @Annotation(new Column(opts))
 }

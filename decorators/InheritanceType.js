@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class InheritanceType {
     __construct(type) {
@@ -28,5 +28,5 @@ export class InheritanceType {
  * Id decorator.
  */
 export decorator @InheritanceType(type) {
-    @metadata(InheritanceType, new InheritanceType(type))
+    @Annotation(new InheritanceType(type))
 }

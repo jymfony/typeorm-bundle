@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class GeneratedValue {
     __construct(opts = {}) {
@@ -31,5 +31,5 @@ export class GeneratedValue {
  * @param {string} [opts.strategy]
  */
 export decorator @GeneratedValue(opts = true) {
-    @metadata(GeneratedValue, new GeneratedValue())
+    @Annotation(new GeneratedValue())
 }

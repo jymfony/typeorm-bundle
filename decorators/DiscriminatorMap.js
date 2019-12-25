@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class DiscriminatorMap {
     __construct(map = {}) {
@@ -26,5 +26,5 @@ export class DiscriminatorMap {
  * @param {Object.<string, Function>} map
  */
 export decorator @DiscriminatorMap(map) {
-    @metadata(DiscriminatorMap, new DiscriminatorMap(map))
+    @Annotation(new DiscriminatorMap(map))
 }

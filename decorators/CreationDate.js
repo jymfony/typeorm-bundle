@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class CreationDate {
 }
@@ -7,5 +7,5 @@ export class CreationDate {
  * CreationDate decorator.
  */
 export decorator @CreationDate() {
-    @metadata(CreationDate, new CreationDate())
+    @Annotation(new CreationDate())
 }

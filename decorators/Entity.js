@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Entity {
     __construct(opts) {
@@ -79,5 +79,5 @@ export class Entity {
  * @param {boolean} [opts.synchronize]
  */
 export decorator @Entity(opts = {}) {
-    @metadata(Entity, new Entity(opts))
+    @Annotation(new Entity(opts))
 }

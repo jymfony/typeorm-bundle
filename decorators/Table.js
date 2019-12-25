@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Table {
     __construct(opts) {
@@ -90,5 +90,5 @@ export class Table {
  * @param {"regular" | "view" | "junction" | "closure" | "closure-junction" | "entity-child"} [opts.type]
  */
 export decorator @Table(opts = {}) {
-    @metadata(Table, new Table(opts))
+    @Annotation(new Table(opts))
 }

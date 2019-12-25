@@ -48,7 +48,7 @@ export class Check {
 export decorator @Check(opts = {}) {
     @register((target, prop, parameterIndex = null) => {
         if (null !== parameterIndex || !! prop) {
-            throw new Error('Exclude decorator can only be used on classes');
+            throw new Error('Check decorator can only be used on classes');
         }
 
         MetadataStorage.addMetadata(Check, new Check(opts), target, prop);

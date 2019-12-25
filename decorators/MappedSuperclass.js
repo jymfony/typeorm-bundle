@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class MappedSuperclass {
 }
@@ -7,5 +7,5 @@ export class MappedSuperclass {
  * Id decorator.
  */
 export decorator @MappedSuperclass() {
-    @metadata(MappedSuperclass, new MappedSuperclass())
+    @Annotation(new MappedSuperclass())
 }

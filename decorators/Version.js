@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Version {
 }
@@ -7,5 +7,5 @@ export class Version {
  * Version decorator.
  */
 export decorator @Version() {
-    @metadata(Version, new Version())
+    @Annotation(new Version())
 }

@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class JoinTable {
     __construct(opts = {}) {
@@ -97,5 +97,5 @@ export class JoinTable {
  * @param {JoinColumn} [opts.inverseJoinColumn]
  */
 export decorator @JoinTable(opts = {}) {
-    @metadata(JoinTable, new JoinTable(opts))
+    @Annotation(new JoinTable(opts))
 }

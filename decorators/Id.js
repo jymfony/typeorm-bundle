@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Id {
 }
@@ -7,5 +7,5 @@ export class Id {
  * Id decorator.
  */
 export decorator @Id() {
-    @metadata(Id, new Id())
+    @Annotation(new Id())
 }

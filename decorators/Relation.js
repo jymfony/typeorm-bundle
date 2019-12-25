@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class Relation {
     __construct(opts = {}) {
@@ -78,7 +78,7 @@ export class Relation {
  * @param {boolean} [opts.eager]
  */
 export decorator @OneToOne(opts) {
-    @metadata(Relation, new Relation(isFunction(opts) ? { target: opts, type: 'one-to-one' } : { ...opts, type: 'one-to-one' }))
+    @Annotation(new Relation(isFunction(opts) ? { target: opts, type: 'one-to-one' } : { ...opts, type: 'one-to-one' }))
 }
 
 /**
@@ -90,7 +90,7 @@ export decorator @OneToOne(opts) {
  * @param {boolean} [opts.eager]
  */
 export decorator @OneToMany(opts) {
-    @metadata(Relation, new Relation(isFunction(opts) ?
+    @Annotation(new Relation(isFunction(opts) ?
         { target: opts, type: 'one-to-many', inverse: true } :
         { ...opts, type: 'one-to-many', inverse: true }
     ))
@@ -105,7 +105,7 @@ export decorator @OneToMany(opts) {
  * @param {boolean} [opts.eager]
  */
 export decorator @ManyToOne(opts) {
-    @metadata(Relation, new Relation(isFunction(opts) ?
+    @Annotation(new Relation(isFunction(opts) ?
         { target: opts, type: 'many-to-one', inverse: false } :
         { ...opts, type: 'many-to-one', inverse: false }
     ))
@@ -121,5 +121,5 @@ export decorator @ManyToOne(opts) {
  * @param {boolean} [opts.eager]
  */
 export decorator @ManyToMany(opts) {
-    @metadata(Relation, new Relation(isFunction(opts) ? { target: opts, type: 'many-to-many' } : { ...opts, type: 'many-to-many' }))
+    @Annotation(new Relation(isFunction(opts) ? { target: opts, type: 'many-to-many' } : { ...opts, type: 'many-to-many' }))
 }

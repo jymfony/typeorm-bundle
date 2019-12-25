@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class JoinColumn {
     __construct(opts = {}) {
@@ -61,5 +61,5 @@ export class JoinColumn {
  * @param {boolean} [opts.nullable]
  */
 export decorator @JoinColumn(opts = {}) {
-    @metadata(JoinColumn, new JoinColumn(opts))
+    @Annotation(new JoinColumn(opts))
 }

@@ -1,4 +1,4 @@
-import { @metadata } from '@jymfony/decorators';
+import { @Annotation } from '@jymfony/decorators';
 
 export class DiscriminatorColumn {
     __construct(opts = {}) {
@@ -50,5 +50,5 @@ export class DiscriminatorColumn {
  * @param {Function|string} [options.type]
  */
 export decorator @DiscriminatorColumn(opts = {}) {
-    @metadata(DiscriminatorColumn, new DiscriminatorColumn(opts))
+    @Annotation(new DiscriminatorColumn(opts))
 }
