@@ -1,11 +1,12 @@
 import { ConnectionManager } from 'typeorm';
 
+const Alias = Jymfony.Component.DependencyInjection.Alias;
+const Extension = Jymfony.Component.DependencyInjection.Extension.Extension;
 const FileLocator = Jymfony.Component.Config.FileLocator;
 const GlobResource = Jymfony.Component.Config.Resource.GlobResource;
 const InvalidConfigurationException = Jymfony.Component.Config.Definition.Exception.InvalidConfigurationException;
-const Alias = Jymfony.Component.DependencyInjection.Alias;
-const Extension = Jymfony.Component.DependencyInjection.Extension.Extension;
 const JsFileLoader = Jymfony.Component.DependencyInjection.Loader.JsFileLoader;
+const Reference = Jymfony.Component.DependencyInjection.Reference;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.DependencyInjection
@@ -32,6 +33,13 @@ export default class TypeORMExtension extends Extension {
 
         this._processConnections(config, container);
         container.getDefinition(Jymfony.Bundle.TypeORMBundle.ManagerRegistry).addArgument(config.default_connection);
+
+        if (ReflectionClass.exists('Jymfony.Component.HttpServer.Controller.ArgumentValueResolverInterface')) {
+            container.register(Jymfony.Bundle.TypeORMBundle.Controller.EntityArgumentResolver)
+                .addArgument(new Reference(Jymfony.Bundle.TypeORMBundle.ManagerRegistry))
+                .addTag('controller.argument_value_resolver', { priority: 120 })
+            ;
+        }
     }
 
     /**

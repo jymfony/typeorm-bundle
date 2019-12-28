@@ -3,7 +3,7 @@ import { ColumnMetadata as Base } from 'typeorm/metadata/ColumnMetadata';
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
-class ColumnMetadata extends Base {
+export default class ColumnMetadata extends Base {
     setEntityValue(entity, value) {
         if (this.embeddedMetadata) {
             // First step - we extract all parent properties of the entity relative to this column, e.g. [data, information, counters]
@@ -25,9 +25,7 @@ class ColumnMetadata extends Base {
 
             return extractEmbeddedColumnValue([ ...this.embeddedMetadata.embeddedMetadataTree ], entity);
         }
-        entity[this.propertyName] = value;
 
+        entity[this.propertyName] = value;
     }
 }
-
-module.exports = ColumnMetadata;

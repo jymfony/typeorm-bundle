@@ -43,6 +43,40 @@ export default class ManagerRegistry {
 
         return connection.manager;
     }
-}
 
-module.exports = ManagerRegistry;
+    /**
+     * Gets the metadata for given target.
+     *
+     * @param {Function|EntitySchema|string} target
+     *
+     * @returns {null|EntityMetadata}
+     */
+    getMetadataFor(target) {
+        for (const name of this._connectionManager.connectionNames) {
+            const connection = this.getConnection(name);
+            if (connection.hasMetadata(target)) {
+                return connection.getMetadata(target);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the correct entity manager for target.
+     *
+     * @param {Function|EntitySchema|string} target
+     *
+     * @returns {Promise<null|EntityManager>}
+     */
+    getManagerFor(target) {
+        for (const name of this._connectionManager.connectionNames) {
+            const connection = this.getConnection(name);
+            if (connection.hasMetadata(target)) {
+                return this.getManager(name);
+            }
+        }
+
+        return null;
+    }
+}

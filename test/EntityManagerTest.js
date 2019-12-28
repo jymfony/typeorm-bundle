@@ -6,7 +6,6 @@ const Argument = Jymfony.Component.Testing.Argument.Argument;
 const Prophet = Jymfony.Component.Testing.Prophet;
 const Foo = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Foo;
 const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
-
 const { expect } = require('chai');
 
 describe('EntityManager', function () {

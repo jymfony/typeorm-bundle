@@ -9,4 +9,5 @@ Jymfony.Bundle.TypeORMBundle.Fixtures = new Jymfony.Component.Autoloader.Namespa
     __dirname + '/fixtures',
 ]);
 
+Jymfony.Bundle.TypeORMBundle.Utils.FindOptionsUtils.patch();
 require('mocha/bin/_mocha');

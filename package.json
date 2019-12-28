@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "typeorm": "^0.2",
-    "@jymfony/autoloader": "*",
+    "@jymfony/autoloader": "https://github.com/jymfony/autoloader.git",
     "@jymfony/util": "*"
   },
   "devDependencies": {
@@ -31,8 +31,10 @@
     "@jymfony/debug": "https://github.com/jymfony/debug.git",
     "@jymfony/decorators": "https://github.com/jymfony/decorators.git",
     "@jymfony/dependency-injection": "https://github.com/jymfony/dependency-injection.git",
+    "@jymfony/framework-bundle": "https://github.com/jymfony/framework-bundle.git",
     "@jymfony/kernel": "https://github.com/jymfony/kernel.git",
     "@jymfony/logger": "https://github.com/jymfony/logger.git",
+    "@jymfony/http-server": "https://github.com/jymfony/http-server.git",
     "@jymfony/testing": "https://github.com/jymfony/testing.git",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",

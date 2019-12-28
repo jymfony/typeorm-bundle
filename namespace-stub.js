@@ -27,6 +27,11 @@ Jymfony = {
             /**
              * @namespace
              */
+            Controller: {},
+
+            /**
+             * @namespace
+             */
             DependencyInjection: {},
 
             /**

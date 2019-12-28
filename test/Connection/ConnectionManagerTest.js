@@ -1,7 +1,5 @@
 const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager;
-const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
-
 const { expect } = require('chai');
 
 describe('ConnectionManager', function () {
@@ -49,6 +47,7 @@ describe('ConnectionManager', function () {
             .to.be.deep.equal([
                 'id _id',
                 'name _name',
+                'related_id _related',
                 'lazy_related_id _lazyRelated',
                 'embeds_external_id _externalId',
                 'embeds_updated_at _updatedAt',

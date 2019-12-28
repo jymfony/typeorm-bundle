@@ -40,7 +40,7 @@ export default class ConnectionManager extends Base {
         super();
 
         /**
-         * @type {Object<string, *>}
+         * @type {Object.<string, *>}
          *
          * @private
          */
@@ -59,6 +59,15 @@ export default class ConnectionManager extends Base {
          * @private
          */
         this._logger = undefined;
+    }
+
+    /**
+     * Gets all the configured connection names.
+     *
+     * @returns {string[]}
+     */
+    get connectionNames() {
+        return Object.keys(this._connections);
     }
 
     /**
@@ -326,7 +335,7 @@ export default class ConnectionManager extends Base {
                 inverseSide: relation.inverse,
                 lazy: lazy,
                 eager: ! lazy,
-                joinColumn: joinColumn ? joinColumnOpts(joinColumn) : undefined,
+                joinColumn: joinColumn ? joinColumnOpts(joinColumn) : (relation.inverse ? undefined : {}),
                 nullable: joinColumn ? joinColumn.nullable : undefined,
                 joinTable: joinTable ? {
                     name: joinTable.name,
@@ -341,6 +350,14 @@ export default class ConnectionManager extends Base {
         return relations;
     }
 
+    /**
+     * @param {ReflectionClass} reflClass
+     * @param {NamingStrategyInterface} namingStrategy
+     *
+     * @returns {Generator<Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema>}
+     *
+     * @private
+     */
     * _loadFromEntitySchema(reflClass, namingStrategy) {
         const constructor = reflClass.getConstructor();
         const schema = constructor[Symbol.for('entitySchema')]();

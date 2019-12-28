@@ -1,7 +1,6 @@
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
-
 const { expect } = require('chai');
 
 describe('Connection', function () {

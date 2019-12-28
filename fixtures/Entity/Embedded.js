@@ -2,6 +2,11 @@
  * @memberOf Jymfony.Bundle.TypeORMBundle.Fixtures.Entity
  */
 class Embedded {
+    __construct() {
+        this._externalId = undefined;
+        this._updatedAt = undefined;
+    }
+
     /**
      * Gets the entity schema.
      *
