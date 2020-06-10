@@ -23,22 +23,22 @@
   },
   "dependencies": {
     "typeorm": "^0.2",
-    "@jymfony/autoloader": "https://github.com/jymfony/autoloader.git",
-    "@jymfony/util": "*"
+    "@jymfony/autoloader": "^0.1.0-alpha.22",
+    "@jymfony/util": "^0.1.0-alpha.22"
   },
   "devDependencies": {
-    "@jymfony/console": "https://github.com/jymfony/console.git",
-    "@jymfony/debug": "https://github.com/jymfony/debug.git",
-    "@jymfony/decorators": "https://github.com/jymfony/decorators.git",
-    "@jymfony/dependency-injection": "https://github.com/jymfony/dependency-injection.git",
-    "@jymfony/framework-bundle": "https://github.com/jymfony/framework-bundle.git",
-    "@jymfony/kernel": "https://github.com/jymfony/kernel.git",
-    "@jymfony/logger": "https://github.com/jymfony/logger.git",
-    "@jymfony/http-server": "https://github.com/jymfony/http-server.git",
-    "@jymfony/testing": "https://github.com/jymfony/testing.git",
+    "@jymfony/console": "^0.1.0-alpha.22",
+    "@jymfony/debug": "^0.1.0-alpha.22",
+    "@jymfony/decorators": "^0.1.0-alpha.22",
+    "@jymfony/dependency-injection": "^0.1.0-alpha.22",
+    "@jymfony/framework-bundle": "^0.1.0-alpha.22",
+    "@jymfony/http-server": "^0.1.0-alpha.22",
+    "@jymfony/kernel": "^0.1.0-alpha.22",
+    "@jymfony/logger": "^0.1.0-alpha.22",
+    "@jymfony/testing": "^0.1.0-alpha.22",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "sqlite3": "^4.1"
+    "sqlite3": "^4.2.0"
   },
   "config": {
     "jymfony-autoload": {
