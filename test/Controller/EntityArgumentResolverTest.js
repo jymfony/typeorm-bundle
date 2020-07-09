@@ -107,7 +107,7 @@ describe('EntityArgumentResolver', function () {
             await __jymfony.forAwait(resolver.resolve(request, argument), () => {});
             throw new Error('FAIL');
         } catch (e) {
-            expect(e).to.be.instanceOf(Jymfony.Component.HttpFoundation.Exception.NotFoundHttpException);
+            expect(e).to.be.instanceOf(Jymfony.Component.Routing.Exception.ResourceNotFoundException);
         }
     } : undefined);
 });

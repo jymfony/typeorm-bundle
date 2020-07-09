@@ -1,5 +1,5 @@
 const ArgumentValueResolverInterface = Jymfony.Component.HttpServer.Controller.ArgumentValueResolverInterface;
-const NotFoundHttpException = Jymfony.Component.HttpFoundation.Exception.NotFoundHttpException;
+const ResourceNotFoundException = Jymfony.Component.Routing.Exception.ResourceNotFoundException;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Controller
@@ -47,7 +47,7 @@ export default class EntityArgumentResolver extends implementationOf(ArgumentVal
                 // Do nothing.
             }
 
-            throw new NotFoundHttpException(__jymfony.sprintf('%s object not found', representative));
+            throw new ResourceNotFoundException(__jymfony.sprintf('%s object not found', representative));
         }
 
         yield entity;

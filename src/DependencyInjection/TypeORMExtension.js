@@ -21,6 +21,10 @@ export default class TypeORMExtension extends Extension {
         loader.load('connection.js');
         loader.load('manager.js');
 
+        if (ReflectionClass.exists('Jymfony.Component.HttpServer.Controller.ArgumentValueResolverInterface')) {
+            loader.load('argument_resolver.js');
+        }
+
         if (ReflectionClass.exists('Jymfony.Component.Console.Command.Command')) {
             loader.load('console.js');
         }
