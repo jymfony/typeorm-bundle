@@ -4,6 +4,9 @@ import { EmbeddedMetadata as Base } from 'typeorm/metadata/EmbeddedMetadata';
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
 export default class EmbeddedMetadata extends Base {
+    prefix;
+    propertyPath;
+
     /**
      * Constructor.
      *

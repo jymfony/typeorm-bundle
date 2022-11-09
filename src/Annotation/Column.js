@@ -1,6 +1,24 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class Column {
+/**
+ * Column.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
+export default class Column {
+    /**
+     * Constructor.
+     *
+     * @param {object|string} [opts]
+     * @param {string} [opts.type]
+     * @param {string} [opts.name]
+     * @param {int|string} [opts.length]
+     * @param {boolean} [opts.nullable]
+     * @param {boolean} [opts.unique]
+     * @param {int} [opts.precision]
+     * @param {int} [opts.scale]
+     */
     __construct(opts) {
         if (isString(opts) || isFunction(opts)) {
             opts = { type: opts };
@@ -121,20 +139,4 @@ export class Column {
     get scale() {
         return this._scale;
     }
-}
-
-/**
- * Column decorator.
- *
- * @param {object|string} [opts]
- * @param {string} [opts.type]
- * @param {string} [opts.name]
- * @param {int|string} [opts.length]
- * @param {boolean} [opts.nullable]
- * @param {boolean} [opts.unique]
- * @param {int} [opts.precision]
- * @param {int} [opts.scale]
- */
-export decorator @Column(opts = {}) {
-    @Annotation(new Column(opts))
 }

@@ -4,6 +4,11 @@ import { RelationMetadata as Base } from 'typeorm/metadata/RelationMetadata';
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
 export default class RelationMetadata extends Base {
+    propertyPath;
+    inverseEntityMetadata;
+    inverseSidePropertyPath;
+    inverseRelation;
+
     constructor(options) {
         let type = options.args.type;
         if (isFunction(type)) {
@@ -36,13 +41,12 @@ export default class RelationMetadata extends Base {
                 return this.givenInverseSidePropertyFactory;
             }
 
-            if (ReflectionClass.exists(this.entityMetadata.target)) {
-                const inverseSideProperty = this.inverseEntityMetadata.relations
-                    .find(r => r.inverseEntityMetadata && r.inverseEntityMetadata.target === this.target);
+        } else if (ReflectionClass.exists(this.entityMetadata.target)) {
+            const inverseSideProperty = this.inverseEntityMetadata.relations
+                .find(r => r.inverseEntityMetadata && r.inverseEntityMetadata.target === this.target);
 
-                if (inverseSideProperty) {
-                    return inverseSideProperty.propertyName;
-                }
+            if (inverseSideProperty) {
+                return inverseSideProperty.propertyName;
             }
         } else if (this.isTreeParent && this.entityMetadata.treeChildrenRelation) {
             return this.entityMetadata.treeChildrenRelation.propertyName;

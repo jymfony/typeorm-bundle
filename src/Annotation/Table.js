@@ -1,6 +1,21 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class Table {
+/**
+ * Table.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class Table {
+    /**
+     * Constructor.
+     *
+     * @param {object|string} [opts]
+     * @param {string} [opts.name]
+     * @param {string} [opts.database]
+     * @param {string} [opts.schema]
+     * @param {"regular" | "view" | "junction" | "closure" | "closure-junction" | "entity-child"} [opts.type]
+     */
     __construct(opts) {
         if (isString(opts)) {
             opts = { name: opts };
@@ -78,17 +93,4 @@ export class Table {
     get type() {
         return this._type;
     }
-}
-
-/**
- * Table decorator.
- *
- * @param {object|string} [opts]
- * @param {string} [opts.name]
- * @param {string} [opts.database]
- * @param {string} [opts.schema]
- * @param {"regular" | "view" | "junction" | "closure" | "closure-junction" | "entity-child"} [opts.type]
- */
-export decorator @Table(opts = {}) {
-    @Annotation(new Table(opts))
 }

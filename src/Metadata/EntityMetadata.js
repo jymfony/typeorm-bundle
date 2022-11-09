@@ -4,6 +4,30 @@ import { EntityMetadata as Base } from 'typeorm';
  * @memberOf Jymfony.Bundle.TypeORMBundle.Metadata
  */
 export default class EntityMetadata extends Base {
+    engine;
+    database;
+    givenTableName;
+    targetName;
+    tableNameWithoutPrefix;
+    tableName;
+    tablePath;
+    name;
+    orderBy;
+    discriminatorValue;
+    treeParentRelation;
+    treeChildrenRelation;
+    createDateColumn;
+    updateDateColumn;
+    deleteDateColumn;
+    versionColumn;
+    discriminatorColumn;
+    treeLevelColumn;
+    nestedSetLeftColumn;
+    nestedSetRightColumn;
+    materializedPathColumn;
+    objectIdColumn;
+    propertiesMap;
+
     create(queryRunner = undefined) {
         let ret;
         if (isFunction(this.target)) {

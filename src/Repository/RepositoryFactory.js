@@ -1,4 +1,4 @@
-import { AbstractRepository, MongoRepository, Repository, TreeRepository, getMetadataArgsStorage } from 'typeorm';
+import { MongoRepository, Repository, TreeRepository, getMetadataArgsStorage } from 'typeorm';
 import { MongoDriver } from 'typeorm/driver/mongodb/MongoDriver';
 
 /**
@@ -30,30 +30,11 @@ export default class RepositoryFactory {
             const repositoryClass = entityRepositoryMetadataArgs.target;
             repository = new repositoryClass(manager, metadata);
         } else if (metadata.treeType) {
-            // NOTE: dynamic access to protected properties. We need this to prevent unwanted properties in those classes to be exposed,
-            // However we need these properties for internal work of the class
-            repository = new TreeRepository();
-
-            Object.assign(repository, {
-                queryRunner: queryRunner,
-            });
+            repository = new TreeRepository(metadata.target, manager, queryRunner);
         } else {
-            // NOTE: dynamic access to protected properties. We need this to prevent unwanted properties in those classes to be exposed,
-            // However we need these properties for internal work of the class
-            repository = manager.connection.driver instanceof MongoDriver ? new MongoRepository() : new Repository();
-
-            Object.assign(repository, {
-                queryRunner: queryRunner,
-            });
-        }
-
-        if (repository instanceof AbstractRepository && ! repository.manager) {
-            repository['manager'] = manager;
-        }
-
-        if (repository instanceof Repository) {
-            repository['manager'] = manager;
-            repository['metadata'] = metadata;
+            repository = manager.connection.driver instanceof MongoDriver
+                ? new MongoRepository(metadata.target, manager, queryRunner)
+                : new Repository(metadata.target, manager, queryRunner);
         }
 
         return repository;

@@ -1,4 +1,24 @@
-export class Index {
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
+
+/**
+ * Index.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class Index {
+    /**
+     * Constructor.
+     *
+     * @param {object|string[]} [opts]
+     * @param {string} [opts.name]
+     * @param {string[]} [opts.columns]
+     * @param {boolean} [opts.synchronize]
+     * @param {boolean} [opts.unique]
+     * @param {boolean} [opts.spatial]
+     * @param {boolean} [opts.fulltext]
+     * @param {string} [opts.where]
+     */
     __construct(opts) {
         if (isArray(opts)) {
             opts = { columns: opts };
@@ -118,26 +138,4 @@ export class Index {
     get where() {
         return this._where;
     }
-}
-
-/**
- * Index decorator.
- *
- * @param {object|string[]} [opts]
- * @param {string} [opts.name]
- * @param {string[]} [opts.columns]
- * @param {boolean} [opts.synchronize]
- * @param {boolean} [opts.unique]
- * @param {boolean} [opts.spatial]
- * @param {boolean} [opts.fulltext]
- * @param {string} [opts.where]
- */
-export decorator @Index(opts = {}) {
-    @register((target, prop, parameterIndex = null) => {
-        if (null !== parameterIndex || !! prop) {
-            throw new Error('Index decorator can only be used on classes');
-        }
-
-        MetadataStorage.addMetadata(Index, new Index(opts), target, prop);
-    })
 }

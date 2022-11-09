@@ -17,6 +17,11 @@ Jymfony = {
             /**
              * @namespace
              */
+            Annotation: {},
+
+            /**
+             * @namespace
+             */
             Connection: {},
 
             /**

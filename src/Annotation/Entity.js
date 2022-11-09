@@ -1,7 +1,22 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class Entity {
-    __construct(opts) {
+/**
+ * Entity.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class Entity {
+    /**
+     * Constructor.
+     *
+     * @param {object} [opts]
+     * @param {string|Function} [opts.extends]
+     * @param {string} [opts.name]
+     * @param {boolean} [opts.synchronize]
+     * @param {string|Function} [opts.repository]
+     */
+    __construct(opts = {}) {
         /**
          * @type {string|Function}
          *
@@ -68,16 +83,4 @@ export class Entity {
     get repository() {
         return this._repository;
     }
-}
-
-/**
- * Entity decorator.
- *
- * @param {object} [opts]
- * @param {string|Function} [opts.extends]
- * @param {string} [opts.name]
- * @param {boolean} [opts.synchronize]
- */
-export decorator @Entity(opts = {}) {
-    @Annotation(new Entity(opts))
 }

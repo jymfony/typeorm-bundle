@@ -1,4 +1,5 @@
 import { FindOptionsUtils as Base } from 'typeorm/find-options/FindOptionsUtils';
+import { DriverUtils } from 'typeorm/driver/DriverUtils';
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Utils
@@ -30,9 +31,47 @@ export default class FindOptionsUtils {
                 visited.add(relation.inverseRelation);
             }
 
-            const relationAlias = alias + '_' + relation.propertyPath.replace('.', '_');
-            qb.leftJoinAndSelect(alias + '.' + relation.propertyPath, relationAlias);
+            // Generate a relation alias
+            let relationAlias = DriverUtils.buildAlias(qb.connection.driver, qb.connection.namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath));
+            // Add a join for the relation
+            // Checking whether the relation wasn't joined yet.
+            let addJoin = true;
+            for (const join of qb.expressionMap.joinAttributes) {
+                if (join.condition !== undefined ||
+                    join.mapToProperty !== undefined ||
+                    join.isMappingMany !== undefined ||
+                    'LEFT' !== join.direction ||
+                    join.entityOrProperty !==
+                    `${alias}.${relation.propertyPath}`) {
+                    continue;
+                }
+                addJoin = false;
+                relationAlias = join.alias.name;
+                break;
+            }
 
+            if (addJoin) {
+                qb.leftJoin(alias + '.' + relation.propertyPath, relationAlias);
+            }
+
+            // Checking whether the relation wasn't selected yet.
+            // This check shall be after the join check to detect relationAlias.
+            let addSelect = true;
+            for (const select of qb.expressionMap.selects) {
+                if (select.aliasName !== undefined ||
+                    select.virtual !== undefined ||
+                    select.selection !== relationAlias) {
+                    continue;
+                }
+                addSelect = false;
+                break;
+            }
+
+            if (addSelect) {
+                qb.addSelect(relationAlias);
+            }
+
+            // (recursive) join the eager relations
             __self.joinEagerRelations(qb, relationAlias, relation.inverseEntityMetadata, visited);
         });
     };

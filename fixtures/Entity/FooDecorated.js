@@ -1,4 +1,10 @@
-import { @Column, @Entity, @GeneratedValue, @Id, @ManyToOne, @OneToOne } from '../../decorators';
+const Column = Jymfony.Bundle.TypeORMBundle.Annotation.Column;
+const Entity = Jymfony.Bundle.TypeORMBundle.Annotation.Entity;
+const GeneratedValue = Jymfony.Bundle.TypeORMBundle.Annotation.GeneratedValue;
+const JoinColumn = Jymfony.Bundle.TypeORMBundle.Annotation.JoinColumn;
+const Id = Jymfony.Bundle.TypeORMBundle.Annotation.Id;
+const ManyToOne = Jymfony.Bundle.TypeORMBundle.Annotation.ManyToOne;
+const OneToOne = Jymfony.Bundle.TypeORMBundle.Annotation.OneToOne;
 
 const Embedded = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Embedded;
 const LazyRelated = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.LazyRelated;
@@ -13,17 +19,19 @@ export default class FooDecorated {
     @Id()
     @Column(Number)
     @GeneratedValue()
-    _id;
+    accessor _id;
 
     @Column({ type: String, nullable: true })
-    _name;
+    accessor _name;
 
     @Column({ type: Embedded })
-    _embeds;
+    accessor _embeds;
 
     @OneToOne({ target: RelatedDecorated, eager: true })
-    _related;
+    @JoinColumn({ name: 'related_id' })
+    accessor _related;
 
     @ManyToOne({ target: LazyRelated, lazy: true })
-    _lazyRelated;
+    @JoinColumn({ name: 'lazy_related_id' })
+    accessor _lazyRelated;
 }

@@ -56,8 +56,8 @@ You can also optionally specify the name of a connection to create the database 
         const connectionName = input.getOption('connection');
         const connection = this._managerRegistry.getConnection(connectionName);
 
-        if (! connection.isConnected) {
-            await connection.connect();
+        if (! connection.isInitialized) {
+            await connection.initialize();
         }
 
         const queryRunner = connection.createQueryRunner();

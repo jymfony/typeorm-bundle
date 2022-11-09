@@ -20,6 +20,7 @@ class Related {
                     target: Foo,
                     type: 'one-to-one',
                     eager: true,
+                    inverseSide: { name: '_foo' },
                 },
             },
         };

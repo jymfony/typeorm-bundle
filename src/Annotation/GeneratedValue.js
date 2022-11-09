@@ -1,6 +1,18 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class GeneratedValue {
+/**
+ * Generated value.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
+export default class GeneratedValue {
+    /**
+     * Constructor.
+     *
+     * @param {object|boolean|string} [opts]
+     * @param {string} [opts.strategy]
+     */
     __construct(opts = {}) {
         if (isBoolean(opts)) {
             opts = { strategy: true };
@@ -22,14 +34,4 @@ export class GeneratedValue {
     get strategy() {
         return this._strategy;
     }
-}
-
-/**
- * GeneratedValue decorator.
- *
- * @param {object|boolean|string} [opts]
- * @param {string} [opts.strategy]
- */
-export decorator @GeneratedValue(opts = true) {
-    @Annotation(new GeneratedValue())
 }

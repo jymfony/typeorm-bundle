@@ -61,8 +61,8 @@ export default class ManagerRegistry {
      */
     async getManager(name = undefined) {
         const connection = this.getConnection(name);
-        if (! connection.isConnected) {
-            await connection.connect();
+        if (! connection.isInitialized) {
+            await connection.initialize();
         }
 
         return connection.manager;

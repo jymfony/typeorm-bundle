@@ -1,4 +1,19 @@
-export class Check {
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
+
+/**
+ * Check decorator.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class Check {
+    /**
+     * Constructor.
+     *
+     * @param {object|string} [opts]
+     * @param {string} [opts.name]
+     * @param {string} [opts.expression]
+     */
     __construct(opts) {
         if (isString(opts)) {
             opts = { expression: opts };
@@ -36,21 +51,4 @@ export class Check {
     get expression() {
         return this._expression;
     }
-}
-
-/**
- * Check decorator.
- *
- * @param {object|string[]} [opts]
- * @param {string} [opts.name]
- * @param {string} [opts.expression]
- */
-export decorator @Check(opts = {}) {
-    @register((target, prop, parameterIndex = null) => {
-        if (null !== parameterIndex || !! prop) {
-            throw new Error('Check decorator can only be used on classes');
-        }
-
-        MetadataStorage.addMetadata(Check, new Check(opts), target, prop);
-    })
 }

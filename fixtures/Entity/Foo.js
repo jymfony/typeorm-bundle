@@ -24,6 +24,7 @@ class Foo {
                     target: Related,
                     type: 'one-to-one',
                     eager: true,
+                    joinColumn: true,
                 },
                 _lazyRelated: {
                     target: LazyRelated,

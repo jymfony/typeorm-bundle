@@ -1,4 +1,19 @@
-export class Exclude {
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
+
+/**
+ * Exclude constraint.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class Exclude {
+    /**
+     * Constructor.
+     *
+     * @param {object|string} [opts]
+     * @param {string} [opts.name]
+     * @param {string} [opts.expression]
+     */
     __construct(opts) {
         if (isString(opts)) {
             opts = { expression: opts };
@@ -36,21 +51,4 @@ export class Exclude {
     get expression() {
         return this._expression;
     }
-}
-
-/**
- * Exclude decorator.
- *
- * @param {object|string[]} [opts]
- * @param {string} [opts.name]
- * @param {string} [opts.expression]
- */
-export decorator @Exclude(opts = {}) {
-    @register((target, prop, parameterIndex = null) => {
-        if (null !== parameterIndex || !! prop) {
-            throw new Error('Exclude decorator can only be used on classes');
-        }
-
-        MetadataStorage.addMetadata(Exclude, new Exclude(opts), target, prop);
-    })
 }

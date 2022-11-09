@@ -1,6 +1,17 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class InheritanceType {
+/**
+ * Inheritance type.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class InheritanceType {
+    /**
+     * Constructor.
+     *
+     * @param {string} type
+     */
     __construct(type) {
         if ('SINGLE_TABLE' !== type) {
             throw new Exception('The only inheritance type supported is "SINGLE_TABLE". Use mapped superclass if you want to create more than one table.');
@@ -22,11 +33,4 @@ export class InheritanceType {
     get type() {
         return this._type;
     }
-}
-
-/**
- * Id decorator.
- */
-export decorator @InheritanceType(type) {
-    @Annotation(new InheritanceType(type))
 }

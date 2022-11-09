@@ -1,6 +1,22 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class JoinTable {
+/**
+ * Join Table.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
+export default class JoinTable {
+    /**
+     * Constructor.
+     *
+     * @param {object} [opts]
+     * @param {string} [opts.name]
+     * @param {string} [opts.database]
+     * @param {string} [opts.schema]
+     * @param {JoinColumn} [opts.joinColumn]
+     * @param {JoinColumn} [opts.inverseJoinColumn]
+     */
     __construct(opts = {}) {
         /**
          * @type {string}
@@ -84,18 +100,4 @@ export class JoinTable {
     get inverseJoinColumn() {
         return this._inverseJoinColumn;
     }
-}
-
-/**
- * JoinColumn decorator.
- *
- * @param {object} [opts]
- * @param {string} [opts.name]
- * @param {string} [opts.database]
- * @param {string} [opts.schema]
- * @param {JoinColumn} [opts.joinColumn]
- * @param {JoinColumn} [opts.inverseJoinColumn]
- */
-export decorator @JoinTable(opts = {}) {
-    @Annotation(new JoinTable(opts))
 }

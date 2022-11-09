@@ -1,6 +1,20 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class JoinColumn {
+/**
+ * Join column.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
+export default class JoinColumn {
+    /**
+     * Constructor.
+     *
+     * @param {object} [opts]
+     * @param {string} [opts.name]
+     * @param {string} [opts.referencedColumnName]
+     * @param {boolean} [opts.nullable]
+     */
     __construct(opts = {}) {
         /**
          * @type {string}
@@ -50,16 +64,4 @@ export class JoinColumn {
     get nullable() {
         return this._nullable;
     }
-}
-
-/**
- * JoinColumn decorator.
- *
- * @param {object} [opts]
- * @param {string} [opts.name]
- * @param {string} [opts.referencedColumnName]
- * @param {boolean} [opts.nullable]
- */
-export decorator @JoinColumn(opts = {}) {
-    @Annotation(new JoinColumn(opts))
 }

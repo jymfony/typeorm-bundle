@@ -1,23 +1,3 @@
-import {
-    Check,
-    Column,
-    CreationDate,
-    DiscriminatorColumn,
-    DiscriminatorMap,
-    Entity,
-    Exclude,
-    GeneratedValue,
-    Id,
-    Index,
-    InheritanceType,
-    JoinColumn,
-    JoinTable,
-    MappedSuperclass,
-    Relation,
-    Table,
-    UpdateDate,
-    Version,
-} from '../../decorators';
 import { AlreadyHasActiveConnectionError } from 'typeorm/error/AlreadyHasActiveConnectionError';
 import { ConnectionManager as Base } from 'typeorm';
 import { parse } from 'url';
@@ -25,6 +5,25 @@ import { parse } from 'url';
 const UnderscoreNamingStrategy = Jymfony.Bundle.TypeORMBundle.NamingStrategy.UnderscoreNamingStrategy;
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
+
+const Column = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Column).getConstructor();
+const Check = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Check).getConstructor();
+const CreationDate = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.CreationDate).getConstructor();
+const DiscriminatorColumn = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorColumn).getConstructor();
+const Exclude = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Exclude).getConstructor();
+const Entity = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Entity).getConstructor();
+const GeneratedValue = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.GeneratedValue).getConstructor();
+const Id = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Id).getConstructor();
+const InheritanceType = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.InheritanceType).getConstructor();
+const JoinColumn = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.JoinColumn).getConstructor();
+const JoinTable = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.JoinTable).getConstructor();
+const DiscriminatorMap = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorMap).getConstructor();
+const Index = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Index).getConstructor();
+const MappedSuperclass = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.MappedSuperclass).getConstructor();
+const Relation = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Relation).getConstructor();
+const Table = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Table).getConstructor();
+const UpdateDate = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.UpdateDate).getConstructor();
+const Version = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Version).getConstructor();
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -91,7 +90,7 @@ export default class ConnectionManager extends Base {
     /**
      * @inheritdoc
      */
-    get(name) {
+    get(name = undefined) {
         name = name || this._defaultConnection;
         if (! super.has(name) && undefined !== this._connections[name]) {
             const connection = this._connections[name];
@@ -135,22 +134,23 @@ export default class ConnectionManager extends Base {
      * @inheritdoc
      */
     create(options) {
-        // Check if such connection is already registered
-        const existConnection = this.connections.find(connection => connection.name === (options.name || this._defaultConnection));
+        const connectionName = options.name || this._defaultConnection;
 
+        // Check if such connection is already registered
+        const existConnection = this.connections.find(connection => connection.name === connectionName);
         if (existConnection) {
             // If connection is registered and its not closed then throw an error
-            if (existConnection.isConnected) {
-                throw new AlreadyHasActiveConnectionError(options.name || this._defaultConnection);
+            if (existConnection.isInitialized) {
+                throw new AlreadyHasActiveConnectionError(connectionName);
             }
 
             // If its registered but closed then simply remove it from the manager
-            this.connections.splice(this.connections.indexOf(existConnection), 1);
+            this.connectionMap.delete(connectionName);
         }
 
         // Create a new connection
         const connection = new Connection(options);
-        this.connections.push(connection);
+        this.connectionMap.set(connectionName, connection);
 
         return connection;
     }
@@ -175,7 +175,7 @@ export default class ConnectionManager extends Base {
             const [ , decorator ] = reflClass.metadata.find(([ t ]) => t === Entity) || [];
             if (decorator) {
                 yield * this._loadFromDecorator(reflClass, decorator, namingStrategy);
-            } else if (reflClass.hasMethod(Symbol.for('entitySchema'))) {
+            } else if ('function' === typeof reflClass.getConstructor()[Symbol.for('entitySchema')]) {
                 yield * this._loadFromEntitySchema(reflClass, namingStrategy);
             }
         }
@@ -314,7 +314,7 @@ export default class ConnectionManager extends Base {
 
         for (const field of reflClass.fields) {
             const reflField = reflClass.getField(field);
-            const [ , relation ] = reflField.metadata.find(([ t ]) => t === Relation) || [];
+            const [ , relation ] = reflField.metadata.find(([ t ]) => new ReflectionClass(t).isInstanceOf(Relation)) || [];
             if (! relation) {
                 continue;
             }
@@ -322,10 +322,10 @@ export default class ConnectionManager extends Base {
             const [ , id ] = reflField.metadata.find(([ t ]) => t === Id) || [];
             const [ , joinColumn ] = reflField.metadata.find(([ t ]) => t === JoinColumn) || [];
             const [ , joinTable ] = reflField.metadata.find(([ t ]) => t === JoinTable) || [];
-            const joinColumnOpts = (joinColumn) => ({
+            const joinColumnOpts = (joinColumn) => (joinColumn.name || joinColumn.referencedColumnName ? {
                 name: joinColumn.name,
                 referencedColumnName: joinColumn.referencedColumnName,
-            });
+            } : true);
 
             const lazy = !! relation.lazy;
             relations[field] = {
@@ -333,6 +333,7 @@ export default class ConnectionManager extends Base {
                 target: relation.target,
                 type: relation.type,
                 inverseSide: relation.inverse,
+                isOwning: !relation.inverse,
                 lazy: lazy,
                 eager: ! lazy,
                 joinColumn: joinColumn ? joinColumnOpts(joinColumn) : (relation.inverse ? undefined : {}),
@@ -367,10 +368,29 @@ export default class ConnectionManager extends Base {
         }
 
         for (const [ key, columnDefinition ] of __jymfony.getEntries(schema.columns || {})) {
-            const field = '_' === key[0] ? key.substr(1) : key;
+            const field = '_' === key[0] ? key.substring(1) : key;
             columnDefinition.name = namingStrategy.columnName(field, columnDefinition.name, []);
-
             schema.columns[key] = columnDefinition;
+        }
+
+        for (const [ key, relationDefinition ] of __jymfony.getEntries(schema.relations || {})) {
+            const field = '_' === key[0] ? key.substring(1) : key;
+            relationDefinition.name = namingStrategy.columnName(field, relationDefinition.name, []);
+            switch (relationDefinition.type) {
+                case 'one-to-one':
+                    relationDefinition.isOwning = !!relationDefinition.joinColumn;
+                    break;
+
+                case 'one-to-many':
+                    relationDefinition.isOwning = false;
+                    break;
+
+                case 'many-to-many':
+                case 'many-to-one':
+                    relationDefinition.isOwning = true;
+                    break;
+            }
+            schema.relations[key] = relationDefinition;
         }
 
         yield new EntitySchema(schema);

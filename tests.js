@@ -10,4 +10,5 @@ Jymfony.Bundle.TypeORMBundle.Fixtures = new Jymfony.Component.Autoloader.Namespa
 ]);
 
 Jymfony.Bundle.TypeORMBundle.Utils.FindOptionsUtils.patch();
+Jymfony.Bundle.TypeORMBundle.Transformer.RawSqlResultsToEntityTransformer.patch();
 require('mocha/bin/_mocha');

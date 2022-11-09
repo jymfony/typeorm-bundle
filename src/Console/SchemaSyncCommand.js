@@ -56,8 +56,8 @@ You can also optionally specify the name of a connection to sync the schema for:
         const connectionName = input.getOption('connection');
         const connection = this._managerRegistry.getConnection(connectionName);
 
-        if (! connection.isConnected) {
-            await connection.connect();
+        if (! connection.isInitialized) {
+            await connection.initialize();
         }
 
         const sqlInMemory = await connection.driver.createSchemaBuilder().log();

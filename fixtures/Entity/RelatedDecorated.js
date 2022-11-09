@@ -1,4 +1,8 @@
-import { @Column, @Entity, @GeneratedValue, @Id, @OneToOne } from '../../decorators';
+const Column = Jymfony.Bundle.TypeORMBundle.Annotation.Column;
+const Entity = Jymfony.Bundle.TypeORMBundle.Annotation.Entity;
+const GeneratedValue = Jymfony.Bundle.TypeORMBundle.Annotation.GeneratedValue;
+const Id = Jymfony.Bundle.TypeORMBundle.Annotation.Id;
+const OneToOne = Jymfony.Bundle.TypeORMBundle.Annotation.OneToOne;
 
 const FooDecorated = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.FooDecorated;
 
@@ -10,11 +14,11 @@ export default class RelatedDecorated {
     @Id()
     @Column(Number)
     @GeneratedValue()
-    _id;
+    accessor _id;
 
     @Column({ type: String, nullable: false })
-    _name;
+    accessor _name;
 
     @OneToOne({ target: FooDecorated, eager: true })
-    _foo;
+    accessor _foo;
 }

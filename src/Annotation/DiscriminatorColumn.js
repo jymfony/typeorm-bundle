@@ -1,6 +1,19 @@
-import { @Annotation } from '@jymfony/decorators';
+const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
 
-export class DiscriminatorColumn {
+/**
+ * Discriminator column.
+ *
+ * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
+ */
+@Annotation(Annotation.ANNOTATION_TARGET_CLASS)
+export default class DiscriminatorColumn {
+    /**
+     * Constructor.
+     *
+     * @param {object|string} [opts = {}]
+     * @param {string} [opts.name]
+     * @param {Function|string} [opts.type]
+     */
     __construct(opts = {}) {
         if (isString(opts)) {
             opts = { name: opts };
@@ -40,15 +53,4 @@ export class DiscriminatorColumn {
     get type() {
         return this._type;
     }
-}
-
-/**
- * DiscriminatorColumn decorator.
- *
- * @param {object|string} [options = {}]
- * @param {string} [options.name]
- * @param {Function|string} [options.type]
- */
-export decorator @DiscriminatorColumn(opts = {}) {
-    @Annotation(new DiscriminatorColumn(opts))
 }

@@ -1,4 +1,4 @@
-import { Connection as Base } from 'typeorm';
+import { DataSource as Base } from 'typeorm';
 
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const ConnectionMetadataBuilder = Jymfony.Bundle.TypeORMBundle.Metadata.ConnectionMetadataBuilder;

@@ -37,7 +37,7 @@ export default class EntityArgumentResolver extends implementationOf(ArgumentVal
         const entityManager = await this._managerRegistry.getManagerFor(argument.type);
 
         const identifier = request.attributes.get(argument.name, request.attributes.get('id'));
-        const entity = await entityManager.findOne(argument.type, identifier);
+        const entity = await entityManager.findOneById(argument.type, identifier);
 
         if (! entity) {
             let representative = this._managerRegistry.getMetadataFor(argument.type).name;

@@ -1,5 +1,4 @@
-import { @Type } from '@jymfony/decorators';
-
+const Type = Jymfony.Component.Autoloader.Decorator.Type;
 const JsonResponse = Jymfony.Component.HttpFoundation.JsonResponse;
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
 
