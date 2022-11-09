@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src/",
-    "test": "node ./tests.js test/*Test.js test/**/*Test.js"
+    "test": "node ./tests.js test/*Test.js test/**/*Test.js",
+    "coverage": "nyc npm test",
+    "coverage-html": "nyc --reporter=lcov npm test"
   },
   "keywords": [
     "jymfony bundle",

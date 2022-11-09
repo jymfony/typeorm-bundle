@@ -5,6 +5,7 @@ const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
  *
  * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
  */
+export default
 @Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
-export default class Id {
+class Id {
 }

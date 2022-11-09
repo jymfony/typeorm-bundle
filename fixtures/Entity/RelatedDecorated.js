@@ -9,8 +9,9 @@ const FooDecorated = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.FooDecorated;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Fixtures.Entity
  */
+export default
 @Entity()
-export default class RelatedDecorated {
+class RelatedDecorated {
     @Id()
     @Column(Number)
     @GeneratedValue()

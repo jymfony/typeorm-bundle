@@ -6,8 +6,9 @@ const Relation = Jymfony.Bundle.TypeORMBundle.Annotation.Relation;
  *
  * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
  */
+export default
 @Annotation(Annotation.ANNOTATION_TARGET_ACCESSOR)
-export default class OneToMany extends Relation {
+class OneToMany extends Relation {
     __construct(opts = {}) {
         super.__construct(isFunction(opts)
             ? { target: opts, type: 'one-to-many', inverse: true }

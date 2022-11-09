@@ -14,8 +14,9 @@ const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooReposi
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Fixtures.Entity
  */
+export default
 @Entity({ repository: FooRepository })
-export default class FooDecorated {
+class FooDecorated {
     @Id()
     @Column(Number)
     @GeneratedValue()

@@ -5,8 +5,9 @@ const Annotation = Jymfony.Component.Autoloader.Decorator.Annotation;
  *
  * @memberOf Jymfony.Bundle.TypeORMBundle.Annotation
  */
+export default
 @Annotation(Annotation.ANNOTATION_TARGET_CLASS)
-export default class DiscriminatorMap {
+class DiscriminatorMap {
     /**
      * Constructor.
      *
