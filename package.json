@@ -4,6 +4,7 @@
   "description": "Jymfony TypeORM Bundle",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src/",
     "test": "node ./tests.js test/*Test.js test/**/*Test.js"
   },
   "keywords": [
