@@ -44,6 +44,7 @@
     "chai": "^4.3.7",
     "glob": "^7.2.0",
     "mocha": "^10.1.0",
+    "nyc": "^14.1.1",
     "sqlite3": "^5.1.2"
   },
   "config": {
@@ -52,5 +53,26 @@
         "Jymfony.Bundle.TypeORMBundle": "src/"
       }
     }
+  },
+  "nyc": {
+    "per-file": true,
+    "hookRequire": true,
+    "hookRunInContext": true,
+    "hookRunInThisContext": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/tests.js",
+      "**/*Interface.js",
+      "**/namespace-stub.js",
+      "**/fixtures/**",
+      "**/test/**"
+    ],
+    "reporter": [
+      "text-summary",
+      "clover"
+    ],
+    "report-dir": "./coverage"
   }
 }
