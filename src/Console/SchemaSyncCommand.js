@@ -5,7 +5,9 @@ const JymfonyStyle = Jymfony.Component.Console.Style.JymfonyStyle;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Console
  */
-export default class SchemaSyncCommand extends Command {
+export default
+@AsCommand({ name: 'typeorm:schema:sync', description: 'Syncs schema to database' })
+class SchemaSyncCommand extends Command {
     /**
      * Constructor.
      *
@@ -25,15 +27,7 @@ export default class SchemaSyncCommand extends Command {
     /**
      * @inheritdoc
      */
-    static get defaultName() {
-        return 'typeorm:schema:sync';
-    }
-
-    /**
-     * @inheritdoc
-     */
     configure() {
-        this.description = 'Syncs schema to database';
         this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection used to sync the schema');
         this.addOption('dry-run', 'd', InputOption.VALUE_NONE, 'Do not execute the queries, just print them out');
         this.help = `The <info>%command.name%</info> command synchronizes the schema to the one generated from entities metadata:

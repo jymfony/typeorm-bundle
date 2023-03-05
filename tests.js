@@ -2,13 +2,9 @@ require('@jymfony/autoloader');
 
 Jymfony.Component.Debug.Debug.enable();
 
-/**
- * @namespace
- */
-Jymfony.Bundle.TypeORMBundle.Fixtures = new Jymfony.Component.Autoloader.Namespace(__jymfony.autoload, 'Jymfony.Bundle.TypeORMBundle.Fixtures', [
-    __dirname + '/fixtures',
-]);
+const Runner = Jymfony.Component.Testing.Framework.Runner;
 
 Jymfony.Bundle.TypeORMBundle.Utils.FindOptionsUtils.patch();
 Jymfony.Bundle.TypeORMBundle.Transformer.RawSqlResultsToEntityTransformer.patch();
-require('mocha/bin/_mocha');
+
+new Runner().run([ 'test/**/*Test.js' ]);

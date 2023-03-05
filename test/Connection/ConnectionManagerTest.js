@@ -1,9 +1,9 @@
 const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager;
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
-const { expect } = require('chai');
+const TestCase = Jymfony.Component.Testing.Framework.TestCase;
 
-describe('ConnectionManager', function () {
-    it('should load static metadata', () => {
+export default class ConnectionManagerTest {
+    testShouldLoadStaticMetadata() {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -18,13 +18,13 @@ describe('ConnectionManager', function () {
         }, 'default');
 
         const connection = manager.get();
-
         const metadata = connection.findMetadata(Entity.Foo);
-        expect(metadata).to.be.not.equal(undefined);
-        expect(metadata.target).to.be.equal(new ReflectionClass(Entity.Foo).getConstructor());
-    });
 
-    it('should load decorators metadata', __jymfony.Platform.hasPublicFieldSupport() ? () => {
+        __self.assertNotNull(metadata);
+        __self.assertEquals(new ReflectionClass(Entity.Foo).getConstructor(), metadata.target);
+    }
+
+    testShouldLoadDecoratorsMetadata() {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -39,24 +39,21 @@ describe('ConnectionManager', function () {
         }, 'default');
 
         const connection = manager.get();
-
         const metadata = connection.findMetadata(Entity.FooDecorated);
-        expect(metadata).to.be.not.equal(undefined);
-        expect(metadata.target).to.be.equal(new ReflectionClass(Entity.FooDecorated).getConstructor());
-        expect(metadata.columns.map(m => m.databaseName + ' ' + m.propertyName))
-            .to.be.deep.equal([
-                'id _id',
-                'name _name',
-                'related_id _related',
-                'lazy_related_id _lazyRelated',
-                'embeds_external_id _externalId',
-                'embeds_updated_at _updatedAt',
-            ]);
 
-        expect(metadata.relations.map(m => m.propertyName))
-            .to.be.deep.equal([
-                '_related',
-                '_lazyRelated',
-            ]);
-    } : undefined);
-});
+        __self.assertNotNull(metadata);
+        __self.assertEquals(new ReflectionClass(Entity.FooDecorated).getConstructor(), metadata.target);
+        __self.assertEquals([
+            'id _id',
+            'name _name',
+            'related_id _related',
+            'lazy_related_id _lazyRelated',
+            'embeds_external_id _externalId',
+            'embeds_updated_at _updatedAt',
+        ], metadata.columns.map(m => m.databaseName + ' ' + m.propertyName));
+        __self.assertEquals([
+            '_related',
+            '_lazyRelated',
+        ], metadata.relations.map(m => m.propertyName));
+    }
+}

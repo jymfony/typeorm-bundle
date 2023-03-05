@@ -1,14 +1,14 @@
 const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionManager;
+const ControllerArgumentMetadata = Jymfony.Component.HttpServer.Controller.Metadata.ControllerArgumentMetadata;
+const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
 const EntityArgumentResolver = Jymfony.Bundle.TypeORMBundle.Controller.EntityArgumentResolver;
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
-const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
 const ManagerRegistry = Jymfony.Bundle.TypeORMBundle.ManagerRegistry;
 const Request = Jymfony.Component.HttpFoundation.Request;
-const ControllerArgumentMetadata = Jymfony.Component.HttpServer.Controller.Metadata.ControllerArgumentMetadata;
-const { expect } = require('chai');
+const TestCase = Jymfony.Component.Testing.Framework.TestCase;
 
-describe('EntityArgumentResolver', function () {
-    it ('should support registered entities', __jymfony.Platform.hasPublicFieldSupport() ? () => {
+export default class EntityArgumentResolverTest extends TestCase {
+    testShouldSupportRegisteredEntities() {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -31,10 +31,10 @@ describe('EntityArgumentResolver', function () {
         const method = new ReflectionMethod(new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Fixtures.Controller.Controller), 'showAction');
         const argument = new ControllerArgumentMetadata(method.parameters[0]);
 
-        expect(resolver.supports(request, argument)).to.be.equal(true);
-    } : undefined);
+        __self.assertTrue(resolver.supports(request, argument));
+    }
 
-    it ('should yield entity', __jymfony.Platform.hasPublicFieldSupport() ? async () => {
+    async testShouldYieldEntity() {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -74,10 +74,10 @@ describe('EntityArgumentResolver', function () {
             args.push(value);
         });
 
-        expect(args).to.have.length(1);
-    } : undefined);
+        __self.assertCount(1, args);
+    }
 
-    it ('should throw not found exception on non-existent entity', __jymfony.Platform.hasPublicFieldSupport() ? async () => {
+    async testShouldThrowNotFoundExceptionOnNonExistentEntity() {
         const manager = new ConnectionManager({
             default: {
                 driver: 'sqlite',
@@ -103,11 +103,7 @@ describe('EntityArgumentResolver', function () {
         const method = new ReflectionMethod(new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Fixtures.Controller.Controller), 'showAction');
         const argument = new ControllerArgumentMetadata(method.parameters[0]);
 
-        try {
-            await __jymfony.forAwait(resolver.resolve(request, argument), () => {});
-            throw new Error('FAIL');
-        } catch (e) {
-            expect(e).to.be.instanceOf(Jymfony.Component.Routing.Exception.ResourceNotFoundException);
-        }
-    } : undefined);
-});
+        this.expectException(Jymfony.Component.Routing.Exception.ResourceNotFoundException);
+        await __jymfony.forAwait(resolver.resolve(request, argument), () => {});
+    }
+}

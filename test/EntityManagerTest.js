@@ -1,38 +1,37 @@
+const Argument = Jymfony.Component.Testing.Argument.Argument;
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const EntityManager = Jymfony.Bundle.TypeORMBundle.EntityManager;
 const RepositoryNotFoundError = Jymfony.Bundle.TypeORMBundle.Exception.RepositoryNotFoundError;
 const RepositoryFactory = Jymfony.Bundle.TypeORMBundle.Repository.RepositoryFactory;
-const Argument = Jymfony.Component.Testing.Argument.Argument;
-const Prophet = Jymfony.Component.Testing.Prophet;
+const TestCase = Jymfony.Component.Testing.Framework.TestCase;
+
 const Foo = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity.Foo;
 const FooRepository = Jymfony.Bundle.TypeORMBundle.Fixtures.Repository.FooRepository;
-const { expect } = require('chai');
 
-describe('EntityManager', function () {
-    this.timeout(60000);
-    beforeEach(() => {
-        this._prophet = new Prophet();
-        this._connection = this._prophet.prophesize(Connection);
-    });
+export default class EntityManagerTest extends TestCase {
+    _connection;
 
-    afterEach(() => {
-        this._prophet.checkPredictions();
-    });
+    get defaultTimeout() {
+        return 60000;
+    }
 
-    it('could be created', () => {
+    beforeEach() {
+        this._connection = this.prophesize(Connection);
+    }
+
+    testCouldBeCreated() {
         new EntityManager(this._connection.reveal());
-    });
+    }
 
-    it('getRepository should throw if requested for a non-entity object', () => {
+    testGetRepositoryShouldThrowIfRequestedForANonEntityObject() {
         const em = new EntityManager(this._connection.reveal());
         this._connection.hasMetadata(Argument.any()).willReturn(false);
 
-        expect(() => {
-            em.getRepository(Foo);
-        }).to.throw(RepositoryNotFoundError);
-    });
+        this.expectException(RepositoryNotFoundError);
+        em.getRepository(Foo);
+    }
 
-    it('getRepository should return the custom repository', () => {
+    testGetRepositoryShouldReturnTheCustomRepository() {
         const em = new EntityManager(this._connection.reveal());
         this._connection.driver = new class {}();
 
@@ -50,8 +49,6 @@ describe('EntityManager', function () {
             target: Foo,
         });
 
-        const repository = em.getRepository(Foo);
-
-        expect(repository).to.be.instanceOf(FooRepository);
-    });
-});
+        __self.assertInstanceOf(FooRepository, em.getRepository(Foo));
+    }
+}

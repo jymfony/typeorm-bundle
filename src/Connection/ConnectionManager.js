@@ -6,24 +6,24 @@ const UnderscoreNamingStrategy = Jymfony.Bundle.TypeORMBundle.NamingStrategy.Und
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
 const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 
-const Column = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Column).getConstructor();
-const Check = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Check).getConstructor();
-const CreationDate = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.CreationDate).getConstructor();
-const DiscriminatorColumn = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorColumn).getConstructor();
-const Exclude = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Exclude).getConstructor();
-const Entity = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Entity).getConstructor();
-const GeneratedValue = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.GeneratedValue).getConstructor();
-const Id = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Id).getConstructor();
-const InheritanceType = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.InheritanceType).getConstructor();
-const JoinColumn = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.JoinColumn).getConstructor();
-const JoinTable = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.JoinTable).getConstructor();
-const DiscriminatorMap = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorMap).getConstructor();
-const Index = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Index).getConstructor();
-const MappedSuperclass = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.MappedSuperclass).getConstructor();
-const Relation = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Relation).getConstructor();
-const Table = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Table).getConstructor();
-const UpdateDate = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.UpdateDate).getConstructor();
-const Version = new ReflectionClass(Jymfony.Bundle.TypeORMBundle.Annotation.Version).getConstructor();
+const Column = Jymfony.Bundle.TypeORMBundle.Annotation.Column;
+const Check = Jymfony.Bundle.TypeORMBundle.Annotation.Check;
+const CreationDate = Jymfony.Bundle.TypeORMBundle.Annotation.CreationDate;
+const DiscriminatorColumn = Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorColumn;
+const Exclude = Jymfony.Bundle.TypeORMBundle.Annotation.Exclude;
+const Entity = Jymfony.Bundle.TypeORMBundle.Annotation.Entity;
+const GeneratedValue = Jymfony.Bundle.TypeORMBundle.Annotation.GeneratedValue;
+const Id = Jymfony.Bundle.TypeORMBundle.Annotation.Id;
+const InheritanceType = Jymfony.Bundle.TypeORMBundle.Annotation.InheritanceType;
+const JoinColumn = Jymfony.Bundle.TypeORMBundle.Annotation.JoinColumn;
+const JoinTable = Jymfony.Bundle.TypeORMBundle.Annotation.JoinTable;
+const DiscriminatorMap = Jymfony.Bundle.TypeORMBundle.Annotation.DiscriminatorMap;
+const Index = Jymfony.Bundle.TypeORMBundle.Annotation.Index;
+const MappedSuperclass = Jymfony.Bundle.TypeORMBundle.Annotation.MappedSuperclass;
+const Relation = Jymfony.Bundle.TypeORMBundle.Annotation.Relation;
+const Table = Jymfony.Bundle.TypeORMBundle.Annotation.Table;
+const UpdateDate = Jymfony.Bundle.TypeORMBundle.Annotation.UpdateDate;
+const Version = Jymfony.Bundle.TypeORMBundle.Annotation.Version;
 
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Connection
@@ -172,7 +172,7 @@ export default class ConnectionManager extends Base {
             }
 
             const reflClass = new ReflectionClass(entity);
-            const [ , decorator ] = reflClass.metadata.find(([ t ]) => t === Entity) || [];
+            const decorator = reflClass.getAnnotations(Entity)[0];
             if (decorator) {
                 yield * this._loadFromDecorator(reflClass, decorator, namingStrategy);
             } else if ('function' === typeof reflClass.getConstructor()[Symbol.for('entitySchema')]) {
@@ -192,14 +192,13 @@ export default class ConnectionManager extends Base {
      */
     * _loadFromDecorator(reflClass, decorator, namingStrategy) {
         const constructor = reflClass.getConstructor();
-        const [ , table ] = reflClass.metadata.find(([ t ]) => t === Table) || [];
-        let [ , inheritanceType ] = reflClass.metadata.find(([ t ]) => t === InheritanceType) || [];
-        const [ , discriminatorColumn ] = reflClass.metadata.find(([ t ]) => t === DiscriminatorColumn) || [];
-        const [ , discriminatorMap ] = reflClass.metadata.find(([ t ]) => t === DiscriminatorMap) || [];
+        const table = reflClass.getAnnotations(Table)[0];
+        let inheritanceType = reflClass.getAnnotations(InheritanceType)[0];
+        const discriminatorColumn = reflClass.getAnnotations(DiscriminatorColumn)[0];
+        const discriminatorMap = reflClass.getAnnotations(DiscriminatorMap)[0];
 
-        const indices = reflClass.metadata
-            .filter(([ t ]) => t === Index)
-            .map(([ , index ]) => ({
+        const indices = reflClass.getAnnotations(Index)
+            .map(index => ({
                 name: index.name,
                 columns: index.columns,
                 synchronize: index.synchronize,
@@ -209,16 +208,14 @@ export default class ConnectionManager extends Base {
                 where: index.where,
             }));
 
-        const checks = reflClass.metadata
-            .filter(([ t ]) => t === Check)
-            .map(([ , check ]) => ({
+        const checks = reflClass.getAnnotations(Check)
+            .map(check => ({
                 name: check.name,
                 expression: check.expression,
             }));
 
-        const exclusions = reflClass.metadata
-            .filter(([ t ]) => t === Exclude)
-            .map(([ , check ]) => ({
+        const exclusions = reflClass.getAnnotations(Exclude)
+            .map(check => ({
                 name: check.name,
                 expression: check.expression,
             }));
@@ -227,7 +224,7 @@ export default class ConnectionManager extends Base {
         let columns = this._loadColumns(reflClass, namingStrategy);
         let relations = this._loadRelations(reflClass);
         while ((parent = parent.getParentClass())) {
-            const [ , mappedSuperclass ] = parent.metadata.find(([ t ]) => t === MappedSuperclass) || [];
+            const mappedSuperclass = parent.getAnnotations(MappedSuperclass)[0];
             if (! mappedSuperclass) {
                 break;
             }
@@ -273,16 +270,16 @@ export default class ConnectionManager extends Base {
 
         for (const field of reflClass.fields) {
             const reflField = reflClass.getField(field);
-            const [ , column ] = reflField.metadata.find(([ t ]) => t === Column) || [];
+            const column = reflField.getAnnotations(Column)[0];
             if (! column) {
                 continue;
             }
 
-            const [ , id ] = reflField.metadata.find(([ t ]) => t === Id) || [];
-            const [ , generatedValue ] = reflField.metadata.find(([ t ]) => t === GeneratedValue) || [];
-            const [ , version ] = reflField.metadata.find(([ t ]) => t === Version) || [];
-            const [ , creationDate ] = reflField.metadata.find(([ t ]) => t === CreationDate) || [];
-            const [ , updateDate ] = reflField.metadata.find(([ t ]) => t === UpdateDate) || [];
+            const id = reflField.getAnnotations(Id)[0];
+            const generatedValue = reflField.getAnnotations(GeneratedValue)[0];
+            const version = reflField.getAnnotations(Version)[0];
+            const creationDate = reflField.getAnnotations(CreationDate)[0];
+            const updateDate = reflField.getAnnotations(UpdateDate)[0];
 
             columns[field] = {
                 primary: !! id,
@@ -314,14 +311,14 @@ export default class ConnectionManager extends Base {
 
         for (const field of reflClass.fields) {
             const reflField = reflClass.getField(field);
-            const [ , relation ] = reflField.metadata.find(([ t ]) => new ReflectionClass(t).isInstanceOf(Relation)) || [];
+            const relation = reflField.getAnnotations(Relation, true)[0];
             if (! relation) {
                 continue;
             }
 
-            const [ , id ] = reflField.metadata.find(([ t ]) => t === Id) || [];
-            const [ , joinColumn ] = reflField.metadata.find(([ t ]) => t === JoinColumn) || [];
-            const [ , joinTable ] = reflField.metadata.find(([ t ]) => t === JoinTable) || [];
+            const id = reflField.getAnnotations(Id)[0];
+            const joinColumn = reflField.getAnnotations(JoinColumn)[0];
+            const joinTable = reflField.getAnnotations(JoinTable)[0];
             const joinColumnOpts = (joinColumn) => (joinColumn.name || joinColumn.referencedColumnName ? {
                 name: joinColumn.name,
                 referencedColumnName: joinColumn.referencedColumnName,

@@ -41,7 +41,6 @@
     "@jymfony/logger": "https://github.com/jymfony/logger.git",
     "@jymfony/metadata": "https://github.com/jymfony/metadata.git",
     "@jymfony/testing": "https://github.com/jymfony/testing.git",
-    "chai": "^4.3.7",
     "glob": "^7.2.0",
     "mocha": "^10.1.0",
     "nyc": "^14.1.1",
@@ -51,6 +50,12 @@
     "jymfony-autoload": {
       "namespaces": {
         "Jymfony.Bundle.TypeORMBundle": "src/"
+      }
+    },
+    "jymfony-autoload-dev": {
+      "namespaces": {
+        "Jymfony.Bundle.TypeORMBundle.Fixtures": "fixtures/",
+        "Jymfony.Bundle.TypeORMBundle.Tests": "test/"
       }
     }
   },

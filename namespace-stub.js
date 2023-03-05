@@ -72,6 +72,16 @@ Jymfony = {
             /**
              * @namespace
              */
+            Resources: {},
+
+            /**
+             * @namespace
+             */
+            Transformer: {},
+
+            /**
+             * @namespace
+             */
             Utils: {},
         },
     },

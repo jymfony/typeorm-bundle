@@ -1,17 +1,18 @@
 const Connection = Jymfony.Bundle.TypeORMBundle.Connection.Connection;
-const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
-const { expect } = require('chai');
+const EntitySchema = Jymfony.Bundle.TypeORMBundle.Metadata.EntitySchema;
+const TestCase = Jymfony.Component.Testing.Framework.TestCase;
 
-describe('Connection', function () {
-    it('could be created', () => {
+export default class ConnectionTest extends TestCase {
+    testCouldBeCreated() {
+        this.setTimeout(10000);
         new Connection({
             type: 'sqlite',
             database: ':memory:',
         });
-    });
+    }
 
-    it('findMetadata should return metadata from autoloaded classes', () => {
+    testFindMetadataShouldReturnMetadataFromAutoloadedClasses() {
         const fooSchema = Entity.Foo[Symbol.for('entitySchema')]();
         const relatedSchema = Entity.Related[Symbol.for('entitySchema')]();
         const embeddedSchema = Entity.Embedded[Symbol.for('entitySchema')]();
@@ -33,7 +34,8 @@ describe('Connection', function () {
         });
 
         const metadata = connection.findMetadata(Entity.Foo);
-        expect(metadata).to.be.not.undefined;
-        expect(metadata.target).to.be.equal(fooSchema.target);
-    });
-});
+
+        __self.assertNotNull(metadata);
+        __self.assertEquals(fooSchema.target, metadata.target);
+    }
+}

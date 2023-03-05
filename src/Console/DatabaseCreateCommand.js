@@ -1,3 +1,4 @@
+const AsCommand = Jymfony.Component.Console.Annotation.AsCommand;
 const Command = Jymfony.Component.Console.Command.Command;
 const InputOption = Jymfony.Component.Console.Input.InputOption;
 const JymfonyStyle = Jymfony.Component.Console.Style.JymfonyStyle;
@@ -5,7 +6,9 @@ const JymfonyStyle = Jymfony.Component.Console.Style.JymfonyStyle;
 /**
  * @memberOf Jymfony.Bundle.TypeORMBundle.Console
  */
-export default class DatabaseCreateCommand extends Command {
+export default
+@AsCommand({ name: 'typeorm:database:create', description: 'Creates database' })
+class DatabaseCreateCommand extends Command {
     /**
      * Constructor.
      *
@@ -25,15 +28,7 @@ export default class DatabaseCreateCommand extends Command {
     /**
      * @inheritdoc
      */
-    static get defaultName() {
-        return 'typeorm:database:create';
-    }
-
-    /**
-     * @inheritdoc
-     */
     configure() {
-        this.description = 'Creates database';
         this.addOption('connection', 'c', InputOption.VALUE_REQUIRED, 'Connection for which the database should be created');
         this.addOption('if-not-exists', null, InputOption.VALUE_NONE, 'Do not throw error if database already exists');
         this.help = `The <info>%command.name%</info> command creates the default connections database:
