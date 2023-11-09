@@ -27,13 +27,13 @@ export default class EntityManager extends Base {
         }
 
         const metadata = this.connection.getMetadata(target);
-        const repository = this.repositories.find(repository => repository.metadata === metadata);
+        const repository = this.repositories.get(metadata);
         if (repository) {
             return repository;
         }
 
         const repositoryInstance = this._getRepositoryFactory().create(this, metadata, this.queryRunner);
-        this.repositories.push(repositoryInstance);
+        this.repositories.set(metadata, repositoryInstance);
 
         return repositoryInstance;
     }

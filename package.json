@@ -22,7 +22,7 @@
   "author": "Alessandro Chitolina <alekitto@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=12"
   },
   "dependencies": {
     "typeorm": "^0.3",

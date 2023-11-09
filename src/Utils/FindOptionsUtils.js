@@ -32,7 +32,7 @@ export default class FindOptionsUtils {
             }
 
             // Generate a relation alias
-            let relationAlias = DriverUtils.buildAlias(qb.connection.driver, qb.connection.namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath));
+            let relationAlias = DriverUtils.buildAlias(qb.connection.driver, { joiner: '__' }, alias, relation.propertyPath);
             // Add a join for the relation
             // Checking whether the relation wasn't joined yet.
             let addJoin = true;

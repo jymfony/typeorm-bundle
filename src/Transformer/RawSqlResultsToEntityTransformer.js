@@ -14,10 +14,30 @@ export default class RawSqlResultsToEntityTransformer {
                     return;
                 }
 
-                for (const [ , value ] of __jymfony.getEntries(entity)) {
+                const reflectionClass = new ReflectionClass(entity);
+                for (const fieldName of reflectionClass.fields) {
+                    const field = reflectionClass.getField(fieldName);
+                    field.accessible = true;
+                    const value = field.getValue(entity);
+
                     if (null !== value) {
                         entities.push(entity);
-                        break;
+                        return;
+                    }
+                }
+
+                for (const fieldName of reflectionClass.properties) {
+                    if (! reflectionClass.hasReadableProperty(fieldName)) {
+                        continue;
+                    }
+
+                    const field = reflectionClass.getReadableProperty(fieldName);
+                    field.accessible = true;
+                    const value = field.invoke(entity);
+
+                    if (null !== value) {
+                        entities.push(entity);
+                        return;
                     }
                 }
             });
