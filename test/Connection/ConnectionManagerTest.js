@@ -2,7 +2,7 @@ const ConnectionManager = Jymfony.Bundle.TypeORMBundle.Connection.ConnectionMana
 const Entity = Jymfony.Bundle.TypeORMBundle.Fixtures.Entity;
 const TestCase = Jymfony.Component.Testing.Framework.TestCase;
 
-export default class ConnectionManagerTest {
+export default class ConnectionManagerTest extends TestCase {
     testShouldLoadStaticMetadata() {
         const manager = new ConnectionManager({
             default: {
