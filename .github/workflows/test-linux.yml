@@ -7,33 +7,27 @@ jobs:
         strategy:
             matrix:
                 node_version:
-                    - 12
-                    - 14
-                    - 15
-                    - 16
-                    - 17
                     - 18
-                    - 19
+                    - 20
+                    - 22
 
         name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on Linux
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - name: Setup node
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node_version }}
                   architecture: ${{ matrix.architecture }}
             - run: npm install
-            - run: npm install @jymfony/compiler
-              if: ${{ matrix.node_version < 16 }}
             - run: npm test
-              if: ${{ matrix.node_version != 16 }}
+              if: ${{ matrix.node_version != 22 }}
             - run: npm run-script coverage
-              if: ${{ matrix.node_version == 16 }}
+              if: ${{ matrix.node_version == 22 }}
             - run: npm install https://github.com/alekitto/ocular.js.git
-              if: ${{ matrix.node_version == 16 }}
+              if: ${{ matrix.node_version == 22 }}
               continue-on-error: true
             - run: $(npm bin)/ocular coverage/clover.xml
-              if: ${{ matrix.node_version == 16 }}
+              if: ${{ matrix.node_version == 22 }}
               continue-on-error: true
